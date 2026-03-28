@@ -1,0 +1,831 @@
+@extends('layouts.app') @section('content')
+
+<style>
+    /* =========================
+ HERO SECTION (RESTORED STRONG LOOK)
+========================= */
+
+    .products-hero {
+        background:
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url("https://images.pexels.com/photos/30415869/pexels-photo-30415869.jpeg");
+        background-size: cover;
+        background-position: center;
+        height: 420px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+    }
+
+    .products-hero h1 {
+        font-size: 40px;
+    }
+
+    .products-hero p {
+        opacity: 0.9;
+    }
+
+    /* =========================
+
+/* =========================
+ PRODUCT GRID
+========================= */
+
+    #productGrid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .product-item {
+        display: flex;
+    }
+
+    /* Desktop */
+    @media (min-width: 992px) {
+        /* .product-item{ width: 33.33%; } */
+        .product-item {
+            width: 25%;
+        }
+    }
+
+    /* Tablet */
+    @media (max-width: 991px) {
+        .product-item {
+            width: 50%;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 576px) {
+        .product-item {
+            width: 100%;
+        }
+    }
+
+    /* =========================
+ PRODUCT CARD (BALANCED UI)
+========================= */
+
+    .product-card {
+        width: 100%;
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+        transition: 0.3s;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    /* =========================
+ IMAGE (FIXED + CLEAN)
+========================= */
+
+    .product-img {
+        width: 100%;
+        height: 240px;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .product-img img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transition: 0.3s;
+    }
+
+    .product-card:hover img {
+        transform: scale(1.05);
+    }
+
+    /* =========================
+ BADGES
+========================= */
+
+    .badge-new {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #ff3b3b;
+        color: white;
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 5px;
+    }
+
+    .wishlist {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: white;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .wishlist.active {
+        background: #ff3b3b;
+        color: white;
+    }
+    /* =========================
+FLY TO CART ANIMATION
+========================= */
+
+    .fly-img {
+        position: fixed;
+        z-index: 9999;
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        pointer-events: none;
+        transition: all 0.8s ease-in-out;
+    }
+   
+
+    /* =========================
+ CARD BODY FIX
+========================= */
+
+    .card-body {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* =========================
+ TEXT STYLING
+========================= */
+
+    .product-title {
+        font-size: 16px;
+        font-weight: 600;
+        height: 42px;
+        overflow: hidden;
+    }
+
+    .category-badge {
+        font-size: 11px;
+    }
+
+    .rating {
+        font-size: 13px;
+        color: #ffc107;
+    }
+
+    .card-body p {
+        font-size: 13px;
+        height: 36px;
+        overflow: hidden;
+        color: #666;
+    }
+
+    .product-price {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0d6efd;
+    }
+
+    /* =========================
+ BUTTONS (E-COMMERCE STYLE)
+========================= */
+
+    .product-card .btn {
+        font-size: 14px;
+        padding: 8px;
+        border-radius: 6px;
+    }
+
+    .product-card .btn-success {
+        background: #fb641b;
+        border: none;
+    }
+
+    .product-card .btn-success:hover {
+        background: #e85c16;
+    }
+
+    /* =========================
+ HERO RESPONSIVE
+========================= */
+
+    @media (max-width: 768px) {
+        .products-hero {
+            height: 300px;
+            padding: 20px;
+        }
+
+        .products-hero h1 {
+            font-size: 26px;
+        }
+    }
+
+    /* =========================
+ MOBILE FINAL POLISH
+========================= */
+
+    @media (max-width: 576px) {
+        .product-img {
+            height: 200px;
+        }
+
+        .product-title {
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 16px;
+        }
+    }
+    /* ---------------------- */
+    /* ---------------------- */
+    /* Dark minimal bar */
+    /* BAR */
+    .filter-top {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+
+    /* LABEL */
+    .filter-label {
+        color: #888;
+        font-size: 14px;
+    }
+
+    /* BUTTON */
+    .filter-btn {
+        background: transparent;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    /* ACTIVE */
+    .filter-dropdown.active .filter-btn {
+        border: 1px solid #888;
+    }
+
+    /* DROPDOWN */
+    .filter-dropdown {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 110%;
+        left: 0;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        min-width: 150px;
+        z-index: 100;
+    }
+
+    .dropdown-menu div {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .dropdown-menu div:hover {
+        background: #f5f5f5;
+    }
+
+    /* SHOW */
+    .filter-dropdown.open .dropdown-menu {
+        display: block;
+    }
+
+    /* CHIPS */
+    .active-filters {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .filter-chip {
+        background: #eee;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    /* CLEAR BUTTON */
+    .clear-btn {
+        background: none;
+        border: none;
+        color: #888;
+        cursor: pointer;
+    }
+
+    .clear-btn:hover {
+        color: #000;
+    }
+
+    /* RIGHT SIDE */
+    .product-count {
+        color: #888;
+    }
+
+    /* HOVER ANIMATION */
+    .filter-btn:hover {
+        transform: translateY(-1px);
+    }
+    .sort-box {
+    position: relative;
+    }
+
+    .sort-box .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+    /* ---------------------- */
+    /* ---------------------- */
+</style>
+
+<!-- HERO -->
+<div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+        <h5>Your Cart</h5>
+        <span onclick="toggleCart()">✖</span>
+    </div>
+    <div id="cartItems"></div>
+</div>
+
+<section class="products-hero">
+    <div>
+        <h1 class="display-5 fw-bold">Our 3D Printed Products</h1>
+        <p class="lead">
+            Explore unique creations made with advanced 3D printing
+        </p>
+    </div>
+</section>
+
+<!-- FILTERS -->
+<div class="container my-4">
+    <!-- FILTER BAR -->
+    <div
+        class="filter-top d-flex justify-content-between align-items-center flex-wrap gap-3"
+    >
+        <!-- LEFT -->
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+            <span class="filter-label">Filter:</span>
+
+            <!-- CATEGORY -->
+            <div class="filter-dropdown" data-name="Category">
+                <button class="filter-btn">Category ▾</button>
+                <div class="dropdown-menu">
+                    <div data-value="all">All</div>
+                    <div data-value="tools">3D Tools</div>
+                    <div data-value="decor">Home Decor</div>
+                    <div data-value="keychain">Keychains</div>
+                    <div data-value="gifting">Gifting</div>
+                    <div data-value="action figure">Action figure</div>
+                </div>
+            </div>
+
+            <!-- PRICE SORT -->
+            <div class="filter-dropdown" data-name="priceRange">
+                <button class="filter-btn">Price Range ▾</button>
+                <div class="dropdown-menu p-3">
+                    <input type="range" min="0" max="10000" id="priceRange">
+                    <div>₹0 - ₹<span id="priceValue">10000</span></div>
+                </div>
+            </div>
+            
+            <!-- CLEAR -->
+            <button id="clearFilters" class="clear-btn">Clear</button>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="d-flex align-items-center gap-4">
+            <div class="sort-box filter-dropdown" data-name="sort">
+                <button class="filter-btn">Sort by ▾</button>
+                <div class="dropdown-menu">
+                    <div data-value="az">A-Z</div>
+                    <div data-value="za">Z-A</div>
+                    <div data-value="low">Price: Low → High</div>
+                    <div data-value="high">Price: High → Low</div>
+                </div>
+            </div>
+
+            <span class="product-count" id="productCount">
+                {{ count($products ?? []) }} products
+            </span>
+        </div>
+    </div>
+
+    <!-- ACTIVE FILTER CHIPS -->
+    <div class="active-filters mt-2" id="activeFilters"></div>
+</div>
+
+<!-- FILTERS -->
+
+<!-- PRODUCTS -->
+
+<div class="container mt-5">
+    <div class="row" id="productGrid">
+        @foreach($products as $product)
+
+        <div
+            class="col-lg-4 col-md-6 mb-4 product-item"
+            data-name="{{ strtolower($product->name) }}"
+            data-category="{{ strtolower($product->category ?? 'general') }}"
+            data-price="{{ $product->price }}"
+        >
+            <div class="card product-card h-100">
+                <span class="badge-new">NEW</span>
+               
+                <div class="product-img">
+                    <img src="/product_images/{{ $product->image }}" />
+
+                    <div class="wishlist" data-id="{{ $product->id }}">
+                        <i class="bi bi-heart"></i>
+                    </div>
+                </div>
+
+                <div class="card-body text-center">
+                    <div>
+                        <div class="product-title">{{ $product->name }}</div>
+
+                        <span class="badge bg-secondary category-badge">
+                            {{ $product->category ?? 'General' }}
+                        </span>
+
+                        <div class="rating">
+                            @for($i=1;$i<=5;$i++) @if($i <= ($product->rating ??
+                            3)) ★ @else ☆ @endif @endfor
+                        </div>
+
+                        <p class="text-muted small">
+                            {{ Str::limit($product->description,80) }}
+                        </p>
+                    </div>
+
+                    <div>
+                        <div class="product-price">₹{{ $product->price }}</div>
+
+                        <div class="d-grid gap-2">
+                            <button
+                                class="btn btn-outline-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#productModal{{ $product->id }}"
+                            >
+                                Quick View
+                            </button>
+
+                            <form
+                                action="{{ route('cart.add',$product->id) }}"
+                                method="POST"
+                            >
+                                @csrf
+                                <!-- <input type="hidden" name="quantity" value="1"> -->
+                                <input
+                                    type="hidden"
+                                    name="quantity"
+                                    value="1"
+                                    min="1"
+                                    class="form-control mb-2"
+                                />
+
+                                <button class="btn btn-success addToCart w-100">
+                                    Add to Cart
+                                </button>
+                            </form>
+
+                            <a
+                                href="/product/{{ $product->id }}"
+                                class="btn btn-dark"
+                            >
+                                View Details
+                            </a>
+                            <!-- -------------- -->
+                            @if(isset($product->stock))
+                            <p class="text-danger small">
+                                Only {{ $product->stock }} left in stock!
+                            </p>
+                            @endif
+                            <!-- -------------- -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK VIEW MODAL -->
+
+        <div class="modal fade" id="productModal{{ $product->id }}">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img
+                                    src="/product_images/{{ $product->image }}"
+                                    class="img-fluid rounded"
+                                />
+                            </div>
+
+                            <div class="col-md-6">
+                                <h3>{{ $product->name }}</h3>
+
+                                <span class="badge bg-secondary mb-2">
+                                    {{ $product->category ?? 'General' }}
+                                </span>
+
+                                <p>{{ $product->description }}</p>
+
+                                <h4 class="text-primary">
+                                    ₹{{ $product->price }}
+                                </h4>
+                                <p class="small text-muted">
+                                    🚚 Delivery in 2-4 days
+                                </p>
+
+                                <div class="d-flex gap-2 mt-3">
+                                    <form
+                                        action="{{ route('cart.add',$product->id) }}"
+                                        method="POST"
+                                    >
+                                        @csrf
+                                        <input
+                                            type="hidden"
+                                            name="quantity"
+                                            value="1"
+                                        />
+
+                                        <button
+                                            class="btn btn-success btn-cart addToCart"
+                                            data-id="{{ $product->id }}"
+                                        >
+                                            Add To Cart
+                                        </button>
+                                    </form>
+
+                                    <a
+                                        href="/product/{{ $product->id }}"
+                                        class="btn btn-dark"
+                                    >
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @endforeach
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="d-flex justify-content-center mt-4">
+        {{ $products->links('pagination::bootstrap-5') }}
+    </div>
+</div>
+
+<!-- CUSTOM PRINT SECTION -->
+
+<section class="custom-print">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Need a Custom 3D Print?</h2>
+
+        <p class="mb-4">Upload your STL model and we will print it for you.</p>
+
+        <form
+            action="/upload-model"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+            @csrf
+
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <input type="file" name="model" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100">Upload</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    /* FILTER SYSTEM */
+
+    let filters = {
+        category: null,
+        price: null,
+        sort: null 
+    };
+
+    // TOGGLE DROPDOWN
+    document.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+            this.parentElement.classList.toggle("open");
+        });
+    });
+
+    // SELECT VALUE
+    document.querySelectorAll(".dropdown-menu div").forEach((item) => {
+        item.addEventListener("click", function () {
+            let parent = this.closest(".filter-dropdown");
+            let type = parent.dataset.name.toLowerCase();
+            let value = this.dataset.value;
+
+            filters[type] = value;
+
+            parent.classList.add("active");
+            parent.querySelector(".filter-btn").innerText =
+                this.innerText + " ▾";
+
+            parent.classList.remove("open");
+
+            updateChips();
+            applyFilters(); // 🔥 IMPORTANT
+        });
+    });
+
+    // APPLY FILTER LOGIC
+    function applyFilters() {
+        let products = document.querySelectorAll(".product-item");
+        let visibleCount = 0;
+
+        products.forEach((product) => {
+            let category = product.dataset.category;
+            let price = parseFloat(product.dataset.price);
+
+            let show = true;
+
+            // CATEGORY FILTER
+            if (filters.category && filters.category !== "all") {
+                if (category !== filters.category) {
+                    show = false;
+                }
+            }
+
+            // SHOW / HIDE
+            product.style.display = show ? "block" : "none";
+
+            if (show) visibleCount++;
+        });
+
+        // PRICE SORT
+        if (filters.price) {
+            let grid = document.getElementById("productGrid");
+            let items = Array.from(products).filter(
+                (p) => p.style.display !== "none",
+            );
+
+            items.sort((a, b) => {
+                let priceA = parseFloat(a.dataset.price);
+                let priceB = parseFloat(b.dataset.price);
+
+                return filters.price === "low"
+                    ? priceA - priceB
+                    : priceB - priceA;
+            });
+
+            items.forEach((p) => grid.appendChild(p));
+        }
+        // SORTING (CATEGORY + SORT COMBINED)
+        let grid = document.getElementById("productGrid");
+        let items = Array.from(document.querySelectorAll(".product-item"))
+            .filter(p => p.style.display !== "none");
+
+        if(filters.sort){
+
+            if(filters.sort === "az"){
+                items.sort((a,b)=> a.dataset.name.localeCompare(b.dataset.name));
+            }
+
+            if(filters.sort === "za"){
+                items.sort((a,b)=> b.dataset.name.localeCompare(a.dataset.name));
+            }
+
+            if(filters.sort === "low"){
+                items.sort((a,b)=> parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+            }
+
+            if(filters.sort === "high"){
+                items.sort((a,b)=> parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+            }
+
+            items.forEach(p => grid.appendChild(p));
+        }
+
+        // UPDATE COUNT
+        document.getElementById("productCount").innerText =
+            visibleCount + " products";
+    }
+
+    // UPDATE CHIPS
+    function updateChips() {
+        let container = document.getElementById("activeFilters");
+        container.innerHTML = "";
+
+        for (let key in filters) {
+            if (filters[key]) {
+                let chip = document.createElement("div");
+                chip.className = "filter-chip";
+                chip.innerText = key + ": " + filters[key] + " ✕";
+
+                chip.onclick = () => {
+                    filters[key] = null;
+                    updateChips();
+                    applyFilters(); // 🔥 IMPORTANT
+                };
+
+                container.appendChild(chip);
+            }
+        }
+    }
+
+    // CLEAR FILTERS
+    document.getElementById("clearFilters").addEventListener("click", () => {
+        filters = { category: null, price: null };
+
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+            btn.innerText = btn.parentElement.dataset.name + " ▾";
+        });
+
+        document.querySelectorAll(".filter-dropdown").forEach((d) => {
+            d.classList.remove("active");
+        });
+
+        updateChips();
+        applyFilters(); // 🔥 IMPORTANT
+    });
+
+    document.querySelectorAll(".addToCart").forEach((btn) => {
+        btn.addEventListener("click", function (e) {
+            let card = this.closest(".product-card");
+            let img = card.querySelector("img");
+            let cart = document
+                .querySelector(".bi-cart")
+                .getBoundingClientRect();
+
+            let imgRect = img.getBoundingClientRect();
+
+            let flyingImg = img.cloneNode();
+            flyingImg.classList.add("fly-img");
+
+            flyingImg.style.top = imgRect.top + "px";
+            flyingImg.style.left = imgRect.left + "px";
+
+            document.body.appendChild(flyingImg);
+
+            setTimeout(() => {
+                flyingImg.style.top = cart.top + "px";
+                flyingImg.style.left = cart.left + "px";
+                flyingImg.style.width = "20px";
+                flyingImg.style.opacity = "0.5";
+            }, 10);
+
+            setTimeout(() => {
+                flyingImg.remove();
+            }, 800);
+        });
+    });
+
+    document.querySelectorAll(".wishlist").forEach((btn) => {
+        btn.addEventListener("click", function () {
+            this.classList.toggle("active");
+
+            fetch("/wishlist/toggle/" + this.dataset.id, {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector(
+                        'meta[name="csrf-token"]',
+                    ).content,
+                },
+            });
+        });
+    });
+    // function toggleCart(){
+    //     document.getElementById("cartSidebar").classList.toggle("open");
+    // }
+</script>
+
+@endsection
