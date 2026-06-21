@@ -24,6 +24,7 @@ Route::post('/payment/verify', [PaymentController::class, 'verify'])
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +53,7 @@ Route::post('/cart/remove/{id}', [CartController::class,'remove'])->name('cart.r
 | Wishlist (Auth Required)
 |--------------------------------------------------------------------------
 */
-Route::get('/wishlist', [App\Http\Controllers\WishlistController::class, 'index'])->name('wishlist');
+// Route::get('/wishlist', [App\Http\Controllers\WishlistController::class, 'index'])->name('wishlist');
 
 // Route::middleware('auth')->group(function () {
 //     Route::post('/wishlist/toggle/{id}', [WishlistController::class,'toggle'])
@@ -96,6 +97,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/products/delete/{id}', [ProductController::class,'delete'])
         ->name('admin.products.delete');
 
+    Route::get('/orders', [OrderController::class,'adminOrders'])
+        ->name('admin.orders');
+
+    Route::post('/orders/update/{id}', [OrderController::class,'updateStatus'])
+        ->name('admin.orders.update');
+
 });
 
 /*
@@ -112,7 +119,7 @@ Auth::routes();
 |--------------------------------------------------------------------------
 */
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 
 
 
@@ -124,24 +131,23 @@ Route::middleware('auth')->group(function () {
     Route::post('/place-order', [OrderController::class,'placeOrder'])->name('place.order');
 
 });
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+// Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
-    Route::get('/orders', [OrderController::class,'adminOrders'])
-        ->name('admin.orders');
+//     Route::get('/orders', [OrderController::class,'adminOrders'])
+//         ->name('admin.orders');
 
-    Route::post('/orders/update/{id}', [OrderController::class,'updateStatus'])
-        ->name('admin.orders.update');
+//     Route::post('/orders/update/{id}', [OrderController::class,'updateStatus'])
+//         ->name('admin.orders.update');
 
-});
+// });
 
 
 
 /* CUSTOMER */
-
-Route::get('/custom-order', [CustomOrderController::class,'create'])->name('custom.order');
-
-Route::post('/custom-order', [CustomOrderController::class,'store'])->name('custom.order.store');
-
+Route::middleware('auth')->group(function () {
+    Route::get('/custom-order', [CustomOrderController::class,'create'])->name('custom.order');
+    Route::post('/custom-order', [CustomOrderController::class,'store'])->name('custom.order.store');
+});
 
 /* ADMIN */
 
@@ -152,8 +158,10 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function(){
 
 });
 
-Route::get('/dashboard', [HomeController::class, 'adminDashboard'])
+Route::middleware(['auth','admin'])->get('/dashboard', [HomeController::class, 'adminDashboard'])
     ->name('admin.dashboard');
+// Route::get('/dashboard', [HomeController::class, 'adminDashboard'])
+//     ->name('admin.dashboard');
 
     Route::delete('/admin/delete-image/{id}', [ProductController::class, 'deleteImage']);
 
