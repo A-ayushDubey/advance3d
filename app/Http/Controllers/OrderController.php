@@ -20,7 +20,9 @@ class OrderController extends Controller
             return redirect()->route('cart')->with('error','Cart is empty');
         }
 
-        return view('checkout', compact('cart'));
+        $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']); // ADD THIS
+
+        return view('checkout', compact('cart', 'total')); // ADD 'total' here
     }
 
     // Place order
@@ -35,7 +37,8 @@ class OrderController extends Controller
         $request->validate([
             'name' => 'required',
             'phone' => 'required',
-            'address' => 'required'
+            'address' => 'required',
+            'payment_method' => 'required'
         ]);
 
         $total = 0;
@@ -44,16 +47,19 @@ class OrderController extends Controller
             $total += $item['price'] * $item['quantity'];
         }
 
-        // Create order
+        // ✅ CREATE ORDER FIRST
         $order = Order::create([
             'user_id' => Auth::id(),
             'name' => $request->name,
             'phone' => $request->phone,
             'address' => $request->address,
             'total' => $total,
+            'status' => 'pending',
+            'payment_method' => $request->payment_method,
+            'payment_status' => 'pending',
         ]);
 
-        // Save items
+       // SAVE ITEMS
         foreach($cart as $id => $item){
             OrderItem::create([
                 'order_id' => $order->id,
@@ -63,20 +69,84 @@ class OrderController extends Controller
             ]);
         }
 
-        // Clear cart
-        session()->forget('cart');
 
-        return redirect()->route('home')->with('success','Order placed successfully!');
+        // ================= PAYMENT LOGIC =================
+
+        // COD
+        if($request->payment_method == 'cod'){
+            session()->forget('cart');
+
+            return redirect()->route('orders.my')
+                ->with('success','Order placed successfully!');
+        }
+
+        // 🔥 👉 PASTE YOUR CODE HERE (UPI)
+        if($request->payment_method == 'upi'){
+            return redirect()->route('orders.show', $order->id)
+                ->with('upi', true);
+        }
+
+        // Razorpay
+        if($request->payment_method == 'razorpay'){
+            return response()->json([
+                'order_id' => $order->id,
+                'amount' => $total
+            ]);
+        }
+    }
+    public function deleteOrder($id)
+    {
+        $order = Order::findOrFail($id);
+
+        // Optional: delete items also
+        $order->items()->delete();
+
+        $order->delete();
+
+        return back()->with('success', 'Order deleted successfully');
     }
 
     // ADMIN: View all orders
-    public function adminOrders()
+    public function adminOrders(Request $request)
     {
-        $orders = Order::with('items.product')->latest()->get();
+        $query = Order::with('items.product');
 
-        return view('admin.orders', compact('orders'));
+        // 🔍 SEARCH (id, name, phone)
+        if($request->search){
+            $query->where(function($q) use ($request){
+                $q->where('id', $request->search)
+                ->orWhere('name', 'like', '%'.$request->search.'%')
+                ->orWhere('phone', 'like', '%'.$request->search.'%');
+            });
+        }
+
+        // 🎯 STATUS FILTER
+        if($request->status){
+            $query->where('status', $request->status);
+        }
+
+        // 📅 DATE FILTER
+        if($request->date){
+            $query->whereDate('created_at', $request->date);
+        }
+
+        // ✅ PAGINATION
+        $orders = $query->latest()->paginate(10);
+
+        // 📊 STATS (OPTIONAL)
+        $totalOrders = Order::count();
+        $totalRevenue = Order::where('payment_status','paid')->sum('total');
+        $pendingOrders = Order::where('status','pending')->count();
+        $deliveredOrders = Order::where('status','delivered')->count();
+
+        return view('admin.orders', compact(
+            'orders',
+            'totalOrders',
+            'totalRevenue',
+            'pendingOrders',
+            'deliveredOrders'
+        ));
     }
-
     // ADMIN: Update status
     public function updateStatus(Request $request, $id)
     {
@@ -87,4 +157,63 @@ class OrderController extends Controller
 
         return back()->with('success', 'Order status updated');
     }
+    // ================= CUSTOMER: MY ORDERS =================
+        public function myOrders()
+        {
+            $orders = Order::where('user_id', Auth::id())
+                            ->latest()
+                            ->get();
+
+            return view('orders.index', compact('orders'));
+        }
+
+
+        // ================= CUSTOMER: TRACK ORDER =================
+        public function show($id)
+        {
+            $order = Order::with('items.product')
+                        ->where('id', $id)
+                        ->where('user_id', Auth::id())
+                        ->firstOrFail();
+
+            return view('orders.show', compact('order'));
+}
+
+// public function adminDashboard(Request $request)
+// {
+//     $query = Order::with('items.product');
+
+//     // 🔍 SEARCH
+//     if($request->search){
+//         $query->where('id', $request->search)
+//               ->orWhere('name', 'like', '%'.$request->search.'%')
+//               ->orWhere('phone', 'like', '%'.$request->search.'%');
+//     }
+
+//     // 🎯 FILTER STATUS
+//     if($request->status){
+//         $query->where('status', $request->status);
+//     }
+
+//     // 📅 FILTER DATE
+//     if($request->date){
+//         $query->whereDate('created_at', $request->date);
+//     }
+
+//     $orders = $query->latest()->paginate(10);
+
+//     // 📊 STATS
+//     $totalOrders = Order::count();
+//     $totalRevenue = Order::where('payment_status','paid')->sum('total');
+//     $pendingOrders = Order::where('status','pending')->count();
+//     $deliveredOrders = Order::where('status','delivered')->count();
+
+//     return view('admin.dashboard', compact(
+//         'orders',
+//         'totalOrders',
+//         'totalRevenue',
+//         'pendingOrders',
+//         'deliveredOrders'
+//     ));
+// }
 }

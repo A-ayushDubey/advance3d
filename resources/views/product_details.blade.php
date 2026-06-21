@@ -44,16 +44,16 @@
 <!-- ================= PRODUCT DETAILS ================= -->
 <div class="col-md-6">
 
-<h1 class="fw-bold mb-3">{{ $product->name }}</h1>
+<h1 class="fw-bold mb-3 product-name">{{ $product->name }}</h1>
 
-<h3 class="text-primary fw-bold mb-3">₹{{ $product->price }}</h3>
+<h3 class="fw-bold mb-3 product-price-main">₹{{ $product->price }}</h3>
 
-<p class="text-muted">{{ $product->description }}</p>
+<p class="text-muted product-desc">{{ $product->description }}</p>
 
 <div class="d-flex align-items-center mb-3">
-<label class="me-3 fw-bold">Quantity:</label>
+<label class="me-3 fw-bold qty-label">Quantity:</label>
 <input type="number" name="quantity" value="1" min="1"
-class="form-control" style="width:100px;">
+class="form-control qty-input" style="width:100px;">
 </div>
 
 <button class="btn btn-dark btn-lg w-100 mb-3 addToCart" data-id="{{ $product->id }}">
@@ -96,7 +96,7 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
 
             <p class="related-name text-dark">
                 {{ $item->name }} <br>
-                <span class="text-primary">₹{{ $item->price }}</span><br>
+                <span class="related-price">₹{{ $item->price }}</span><br>
 
                 <!-- FIXED LINK -->
                 <a href="/product/{{ $item->id }}" class="btn btn-dark w-100">
@@ -131,7 +131,7 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
 
             <p class="related-name text-dark">
                 {{ $item->name }} <br>
-                <span class="text-primary">₹{{ $item->price }}</span><br>
+                <span class="related-price">₹{{ $item->price }}</span><br>
 
                 <a href="/product/{{ $item->id }}" class="btn btn-dark w-100">
                     View Details
@@ -173,31 +173,143 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
 
 <style>
 
+/* =====================================================
+   AD-VANCE 3D — PRODUCT DETAIL PAGE
+   modern / minimal restyle
+   Tokens reused from layout.blade.php; fallbacks included.
+===================================================== */
+
+/* PRODUCT NAME / PRICE / DESC */
+
+.product-name{
+    font-family: var(--font-display, sans-serif);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink, #1A1A1A);
+}
+body.dark-mode .product-name{
+    color: var(--ink-dark, #F2F1ED);
+}
+
+.product-price-main{
+    font-family: var(--font-mono, monospace);
+    font-weight: 500;
+    color: var(--ink, #1A1A1A);
+    font-size: 1.6rem;
+}
+body.dark-mode .product-price-main{
+    color: var(--ink-dark, #F2F1ED);
+}
+
+.product-desc{
+    color: var(--ink-soft, #6B6B65) !important;
+    font-size: 14.5px;
+    line-height: 1.7;
+}
+body.dark-mode .product-desc{
+    color: var(--ink-soft-dark, #9B9A92) !important;
+}
+
+.qty-label{
+    color: var(--ink, #1A1A1A);
+    font-size: 14px;
+}
+body.dark-mode .qty-label{
+    color: var(--ink-dark, #F2F1ED);
+}
+
+.qty-input{
+    border: 1px solid var(--hairline, #E8E6E0) !important;
+    border-radius: 3px !important;
+    font-family: var(--font-mono, monospace);
+}
+.qty-input:focus{
+    border-color: var(--accent, #FF5A1F) !important;
+    box-shadow: 0 0 0 3px var(--accent-50, #FFF1EA) !important;
+}
+body.dark-mode .qty-input{
+    background: var(--bg-raised-dark, #1A1A19);
+    border-color: var(--hairline-dark, #2C2C29) !important;
+    color: var(--ink-dark, #F2F1ED);
+}
+
+/* BUTTONS */
+
+.btn-dark{
+    background: var(--ink, #1A1A1A) !important;
+    border-color: var(--ink, #1A1A1A) !important;
+    border-radius: 3px !important;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+.btn-dark:hover{
+    background: var(--accent, #FF5A1F) !important;
+    border-color: var(--accent, #FF5A1F) !important;
+    transform: translateY(-1px);
+}
+body.dark-mode .btn-dark{
+    background: var(--ink-dark, #F2F1ED) !important;
+    border-color: var(--ink-dark, #F2F1ED) !important;
+    color: var(--bg-dark, #0F0F0F) !important;
+}
+
+.btn-success{
+    background: var(--ink, #1A1A1A) !important;
+    border-color: var(--ink, #1A1A1A) !important;
+    border-radius: 3px !important;
+    transition: 0.2s ease;
+}
+.btn-success:hover{
+    background: var(--accent, #FF5A1F) !important;
+    border-color: var(--accent, #FF5A1F) !important;
+    transform: translateY(-1px);
+}
+body.dark-mode .btn-success{
+    background: var(--ink-dark, #F2F1ED) !important;
+    border-color: var(--ink-dark, #F2F1ED) !important;
+    color: var(--bg-dark, #0F0F0F) !important;
+}
+
 /* RELATED PRODUCTS */
 
 .related-title{
-    font-size: 22px;
+    font-family: var(--font-display, sans-serif);
+    font-weight: 600;
+    font-size: 1.3rem;
     margin-bottom: 20px;
+    color: var(--ink, #1A1A1A);
+}
+body.dark-mode .related-title{
+    color: var(--ink-dark, #F2F1ED);
 }
 
 .related-card{
-    border: 1px solid #eee;
-    border-radius: 10px;
+    border: 1px solid var(--hairline, #E8E6E0);
+    border-radius: 6px;
     overflow: hidden;
-    transition: 0.3s;
-    background: #fff;
+    transition: 0.25s ease;
+    background: var(--bg-raised, #fff);
 }
 
 .related-card:hover{
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-color: var(--accent, #FF5A1F);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.08);
     transform: translateY(-5px);
+}
+
+body.dark-mode .related-card{
+    background: var(--bg-raised-dark, #1A1A19);
+    border-color: var(--hairline-dark, #2C2C29);
 }
 
 .related-img{
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: #f8f9fa;
+    background: var(--accent-50, #FFF1EA);
+}
+body.dark-mode .related-img{
+    background: var(--accent-50-dark, #2A1A12);
 }
 
 .related-img img{
@@ -207,11 +319,25 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
 }
 
 .related-name{
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 500;
-    padding: 10px;
+    padding: 12px;
     text-align: center;
     margin: 0;
+    color: var(--ink, #1A1A1A);
+}
+body.dark-mode .related-name{
+    color: var(--ink-dark, #F2F1ED) !important;
+}
+
+.related-price{
+    font-family: var(--font-mono, monospace);
+    font-weight: 500;
+    color: var(--ink, #1A1A1A);
+    font-size: 13px;
+}
+body.dark-mode .related-price{
+    color: var(--ink-dark, #F2F1ED);
 }
 
 /* MAIN IMAGE */
@@ -222,8 +348,11 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#f8f9fa;
-    border-radius:10px;
+    background: var(--accent-50, #FFF1EA);
+    border-radius:8px;
+}
+body.dark-mode .main-image-box{
+    background: var(--accent-50-dark, #2A1A12);
 }
 
 .main-image{
@@ -231,23 +360,36 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
     max-width:100%;
     object-fit:contain;
     cursor:pointer;
+    box-shadow: none !important;
 }
 
 /* THUMBNAILS */
 
 .thumb-img{
-    width:70px;
-    height:70px;
+    width:68px;
+    height:68px;
     object-fit:contain;
-    border-radius:8px;
+    border-radius:4px;
     cursor:pointer;
-    border:2px solid transparent;
-    background:#f8f9fa;
+    border:1px solid var(--hairline, #E8E6E0);
+    background: var(--accent-50, #FFF1EA);
     padding:5px;
+    transition: 0.2s ease;
+}
+.thumb-img:hover{
+    border-color: var(--accent, #FF5A1F);
+    transform: scale(1.04);
 }
 
 .thumb-img.active{
-    border:2px solid black;
+    border:1.5px solid var(--ink, #1A1A1A);
+}
+body.dark-mode .thumb-img{
+    background: var(--accent-50-dark, #2A1A12);
+    border-color: var(--hairline-dark, #2C2C29);
+}
+body.dark-mode .thumb-img.active{
+    border-color: var(--ink-dark, #F2F1ED);
 }
 
 /* MODAL */
@@ -259,7 +401,7 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
     left:0;
     width:100%;
     height:100%;
-    background:black;
+    background: rgba(15,15,15,0.97);
     justify-content:center;
     align-items:center;
     z-index:9999;
@@ -273,26 +415,52 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
 
 .close-btn{
     position:absolute;
-    top:20px;
-    right:30px;
-    font-size:40px;
+    top:24px;
+    right:32px;
+    font-size:28px;
     color:white;
     cursor:pointer;
+    width:38px;
+    height:38px;
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+    transition: 0.2s ease;
+}
+.close-btn:hover{
+    border-color: var(--accent, #FF5A1F);
+    color: var(--accent, #FF5A1F);
 }
 
 .nav-btn{
     position:absolute;
     top:50%;
     transform:translateY(-50%);
-    font-size:40px;
+    font-size:20px;
     color:white;
     background:none;
-    border:none;
+    border:1px solid rgba(255,255,255,0.25);
+    width:44px;
+    height:44px;
+    border-radius:50%;
     cursor:pointer;
+    transition: 0.2s ease;
+}
+.nav-btn:hover{
+    border-color: var(--accent, #FF5A1F);
+    color: var(--accent, #FF5A1F);
 }
 
-.prev{ left:20px; }
-.next{ right:20px; }
+.prev{ left:24px; }
+.next{ right:24px; }
+
+@media (max-width: 576px){
+    .main-image-box{ height:300px; }
+    .thumb-img{ width:56px; height:56px; }
+}
 
 </style>
 

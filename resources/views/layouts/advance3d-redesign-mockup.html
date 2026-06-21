@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AD-VANCE 3D — UI Redesign Mockup</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+
+/* =====================================================
+   AD-VANCE 3D — DESIGN TOKENS
+   Direction: modern / minimal
+   Signature: hairline rule that "prints in" on first
+   scroll (nods to a print head laying a line), and a
+   subtle layer-line texture used once, on cart items.
+===================================================== */
+
+:root{
+  /* ---- color ---- */
+  --bg:        #FAFAF8;
+  --bg-raised: #FFFFFF;
+  --ink:       #1A1A1A;
+  --ink-soft:  #6B6B65;
+  --hairline:  #E8E6E0;
+  --accent:    #FF5A1F;
+  --accent-ink:#7A2B0E;   /* accent text on light accent fill */
+  --accent-50: #FFF1EA;
+
+  /* dark mode */
+  --bg-dark:        #0F0F0F;
+  --bg-raised-dark: #1A1A19;
+  --ink-dark:        #F2F1ED;
+  --ink-soft-dark:   #9B9A92;
+  --hairline-dark:   #2C2C29;
+  --accent-50-dark:  #2A1A12;
+
+  /* ---- type ---- */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* ---- layout ---- */
+  --radius: 3px;
+  --nav-h: 72px;
+  --container: 1180px;
+}
+
+*{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+  transition:background .35s ease, color .35s ease;
+}
+
+body.dark{
+  background:var(--bg-dark);
+  color:var(--ink-dark);
+}
+
+.wrap{ max-width:var(--container); margin:0 auto; padding:0 32px; }
+
+img{ max-width:100%; display:block; }
+
+a{ color:inherit; text-decoration:none; }
+
+::selection{ background:var(--accent); color:#fff; }
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  height:var(--nav-h);
+  display:flex;
+  align-items:center;
+  background:rgba(250,250,248,0.82);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--hairline);
+  transition:background .35s ease, border-color .35s ease;
+}
+
+body.dark .nav{
+  background:rgba(15,15,15,0.78);
+  border-bottom-color:var(--hairline-dark);
+}
+
+/* the "print line" signature: an underline that draws itself
+   in once, the first time the user scrolls past the hero */
+.nav::after{
+  content:"";
+  position:absolute;
+  left:0; bottom:-1px;
+  height:1px;
+  width:0%;
+  background:var(--accent);
+  transition:width 1.1s cubic-bezier(.16,.84,.44,1);
+}
+
+.nav.inked::after{ width:100%; }
+
+.nav .wrap{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-mark{
+  width:30px; height:30px;
+  border:1.5px solid var(--ink);
+  border-radius:50%;
+  position:relative;
+  flex-shrink:0;
+}
+body.dark .brand-mark{ border-color:var(--ink-dark); }
+.brand-mark::before{
+  content:"";
+  position:absolute;
+  inset:5px;
+  border:1.5px solid var(--accent);
+  border-radius:50%;
+}
+
+.brand-text{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:18px;
+  letter-spacing:-0.01em;
+}
+.brand-text span{ color:var(--accent); }
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:36px;
+  list-style:none;
+  margin:0; padding:0;
+}
+
+.nav-links a{
+  font-size:14px;
+  font-weight:500;
+  color:var(--ink-soft);
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 0;
+  position:relative;
+  transition:color .2s ease;
+}
+body.dark .nav-links a{ color:var(--ink-soft-dark); }
+
+.nav-links a:hover{ color:var(--ink); }
+body.dark .nav-links a:hover{ color:var(--ink-dark); }
+
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0; bottom:-3px;
+  width:0; height:1px;
+  background:var(--accent);
+  transition:width .25s ease;
+}
+.nav-links a:hover::after{ width:100%; }
+
+.nav-links a i{ font-size:15px; }
+
+.nav-actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.icon-btn{
+  width:36px; height:36px;
+  border-radius:50%;
+  border:1px solid var(--hairline);
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px;
+  background:transparent;
+  color:var(--ink);
+  cursor:pointer;
+  transition:border-color .2s ease, transform .15s ease, background .2s ease;
+  position:relative;
+}
+body.dark .icon-btn{ border-color:var(--hairline-dark); color:var(--ink-dark); }
+.icon-btn:hover{ border-color:var(--accent); transform:translateY(-1px); }
+
+.cart-badge{
+  position:absolute;
+  top:-5px; right:-5px;
+  background:var(--accent);
+  color:#fff;
+  font-family:var(--font-mono);
+  font-size:10px;
+  width:16px; height:16px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  line-height:1;
+}
+
+.btn-login{
+  font-size:13.5px;
+  font-weight:600;
+  padding:9px 18px;
+  border:1px solid var(--ink);
+  border-radius:var(--radius);
+  transition:background .2s ease, color .2s ease;
+}
+body.dark .btn-login{ border-color:var(--ink-dark); }
+.btn-login:hover{ background:var(--ink); color:var(--bg); }
+body.dark .btn-login:hover{ background:var(--ink-dark); color:var(--bg-dark); }
+
+.nav-toggle{
+  display:none;
+  background:none; border:none;
+  font-size:22px;
+  color:var(--ink);
+  cursor:pointer;
+}
+body.dark .nav-toggle{ color:var(--ink-dark); }
+
+@media (max-width:920px){
+  .nav-links{ display:none; }
+  .nav-toggle{ display:block; }
+  .btn-login{ display:none; }
+}
+
+/* =====================================================
+   HERO (demo content so the navbar/footer have context)
+===================================================== */
+
+.hero{
+  padding:120px 0 100px;
+  border-bottom:1px solid var(--hairline);
+}
+body.dark .hero{ border-bottom-color:var(--hairline-dark); }
+
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  color:var(--accent);
+  letter-spacing:0.04em;
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.eyebrow::before{
+  content:"";
+  width:6px; height:6px;
+  border-radius:50%;
+  background:var(--accent);
+}
+
+.hero h1{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(36px, 5.4vw, 62px);
+  line-height:1.04;
+  letter-spacing:-0.02em;
+  max-width:780px;
+  margin:0 0 22px;
+}
+
+.hero p{
+  font-size:17px;
+  color:var(--ink-soft);
+  max-width:480px;
+  line-height:1.6;
+  margin:0 0 36px;
+}
+body.dark .hero p{ color:var(--ink-soft-dark); }
+
+.hero-actions{ display:flex; gap:14px; align-items:center; }
+
+.btn-primary{
+  background:var(--ink);
+  color:var(--bg);
+  font-weight:600;
+  font-size:14.5px;
+  padding:14px 26px;
+  border-radius:var(--radius);
+  border:1px solid var(--ink);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  transition:background .2s ease, transform .15s ease;
+}
+body.dark .btn-primary{ background:var(--ink-dark); color:var(--bg-dark); border-color:var(--ink-dark); }
+.btn-primary:hover{ background:var(--accent); border-color:var(--accent); transform:translateY(-1px); }
+
+.btn-ghost{
+  font-weight:600;
+  font-size:14.5px;
+  color:var(--ink-soft);
+  padding:14px 8px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+body.dark .btn-ghost{ color:var(--ink-soft-dark); }
+.btn-ghost:hover{ color:var(--ink); }
+body.dark .btn-ghost:hover{ color:var(--ink-dark); }
+
+/* product strip for the demo */
+.strip{ padding:80px 0; }
+.strip-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:36px;
+}
+.strip-head h2{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:26px;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+.strip-head a{
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--ink-soft);
+  display:flex; align-items:center; gap:6px;
+}
+body.dark .strip-head a{ color:var(--ink-soft-dark); }
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:1px;
+  background:var(--hairline);
+  border:1px solid var(--hairline);
+}
+body.dark .grid{ background:var(--hairline-dark); border-color:var(--hairline-dark); }
+
+.card{
+  background:var(--bg);
+  padding:0;
+  transition:background .35s ease;
+}
+body.dark .card{ background:var(--bg-dark); }
+
+.card-img{
+  aspect-ratio:1/1;
+  background:var(--accent-50);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+body.dark .card-img{ background:var(--accent-50-dark); }
+.card-img i{ font-size:42px; color:var(--accent); opacity:0.55; }
+
+.card-add{
+  position:absolute;
+  bottom:12px; right:12px;
+  width:38px; height:38px;
+  border-radius:50%;
+  background:var(--ink);
+  color:var(--bg);
+  border:none;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px;
+  cursor:pointer;
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity .2s ease, transform .2s ease, background .2s ease;
+}
+body.dark .card-add{ background:var(--ink-dark); color:var(--bg-dark); }
+.card:hover .card-add{ opacity:1; transform:translateY(0); }
+.card-add:hover{ background:var(--accent); }
+
+.card-body{ padding:18px 4px 8px; }
+.card-body .tag{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--ink-soft);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+body.dark .card-body .tag{ color:var(--ink-soft-dark); }
+.card-body h3{
+  font-size:15.5px;
+  font-weight:600;
+  margin:6px 0 8px;
+  font-family:var(--font-body);
+}
+.card-body .price{
+  font-family:var(--font-mono);
+  font-size:14.5px;
+  font-weight:500;
+}
+
+/* =====================================================
+   CART SIDEBAR
+===================================================== */
+
+.cart-fab{
+  position:fixed;
+  bottom:28px; right:28px;
+  width:54px; height:54px;
+  border-radius:50%;
+  background:var(--ink);
+  color:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px;
+  cursor:pointer;
+  z-index:998;
+  border:none;
+  box-shadow:0 8px 24px rgba(0,0,0,0.18);
+  transition:transform .2s ease, background .2s ease;
+}
+body.dark .cart-fab{ background:var(--ink-dark); color:var(--bg-dark); }
+.cart-fab:hover{ transform:scale(1.06); background:var(--accent); }
+
+.cart-fab .cart-badge{ top:-2px; right:-2px; }
+
+.cart-panel{
+  position:fixed;
+  top:0; right:-380px;
+  width:360px;
+  height:100%;
+  background:var(--bg-raised);
+  border-left:1px solid var(--hairline);
+  z-index:1100;
+  transition:right .35s cubic-bezier(.16,.84,.44,1);
+  display:flex;
+  flex-direction:column;
+}
+body.dark .cart-panel{ background:var(--bg-raised-dark); border-left-color:var(--hairline-dark); }
+.cart-panel.open{ right:0; }
+
+.cart-scrim{
+  position:fixed; inset:0;
+  background:rgba(20,18,15,0.32);
+  z-index:1099;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease;
+}
+.cart-scrim.open{ opacity:1; pointer-events:auto; }
+
+.cart-head{
+  padding:26px 26px 18px;
+  border-bottom:1px solid var(--hairline);
+  display:flex; justify-content:space-between; align-items:center;
+}
+body.dark .cart-head{ border-bottom-color:var(--hairline-dark); }
+.cart-head h3{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:18px; margin:0;
+}
+.cart-head button{
+  background:none; border:none; font-size:20px;
+  color:var(--ink-soft); cursor:pointer; line-height:1;
+}
+
+.cart-items{ flex:1; overflow-y:auto; padding:8px 0; }
+
+.cart-item{
+  display:flex; gap:14px;
+  padding:16px 26px;
+  border-bottom:1px solid var(--hairline);
+  position:relative;
+  transition:background .2s ease;
+}
+body.dark .cart-item{ border-bottom-color:var(--hairline-dark); }
+
+/* layer-line texture — the one place we reference FDM printing directly */
+.cart-item::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image:repeating-linear-gradient(
+    to bottom,
+    var(--accent) 0px, var(--accent) 1px,
+    transparent 1px, transparent 6px
+  );
+  opacity:0;
+  transition:opacity .25s ease;
+  pointer-events:none;
+}
+.cart-item:hover::before{ opacity:0.05; }
+
+.cart-item img{
+  width:54px; height:54px;
+  border-radius:var(--radius);
+  background:var(--accent-50);
+  object-fit:cover;
+  flex-shrink:0;
+}
+body.dark .cart-item img{ background:var(--accent-50-dark); }
+
+.cart-item-info{ flex:1; min-width:0; }
+.cart-item-info h4{
+  font-size:14px; font-weight:600; margin:0 0 4px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.cart-item-meta{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--ink-soft);
+  display:flex; justify-content:space-between; align-items:center;
+}
+body.dark .cart-item-meta{ color:var(--ink-soft-dark); }
+
+.qty-stepper{
+  display:flex; align-items:center; gap:8px;
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:2px 8px;
+}
+body.dark .qty-stepper{ border-color:var(--hairline-dark); }
+.qty-stepper button{
+  background:none; border:none; color:var(--ink); cursor:pointer; font-size:13px;
+  width:16px;
+}
+body.dark .qty-stepper button{ color:var(--ink-dark); }
+
+.cart-foot{
+  padding:22px 26px 26px;
+  border-top:1px solid var(--hairline);
+}
+body.dark .cart-foot{ border-top-color:var(--hairline-dark); }
+
+.cart-subtotal{
+  display:flex; justify-content:space-between;
+  font-size:14px; margin-bottom:16px;
+}
+.cart-subtotal span:last-child{ font-family:var(--font-mono); font-weight:500; }
+
+.cart-foot .btn-primary{ width:100%; justify-content:center; }
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+  border-top:1px solid var(--hairline);
+  padding:72px 0 32px;
+  margin-top:60px;
+}
+body.dark .footer{ border-top-color:var(--hairline-dark); }
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr 1.3fr;
+  gap:48px;
+  padding-bottom:56px;
+}
+
+.footer-brand p{
+  font-size:14px;
+  color:var(--ink-soft);
+  line-height:1.65;
+  max-width:280px;
+  margin:16px 0 24px;
+}
+body.dark .footer-brand p{ color:var(--ink-soft-dark); }
+
+.footer h6{
+  font-family:var(--font-mono);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--ink-soft);
+  margin:0 0 18px;
+}
+body.dark .footer h6{ color:var(--ink-soft-dark); }
+
+.footer ul{ list-style:none; padding:0; margin:0; }
+.footer li{ margin-bottom:11px; }
+.footer ul a{
+  font-size:14px; color:var(--ink-soft);
+  transition:color .2s ease;
+}
+body.dark .footer ul a{ color:var(--ink-soft-dark); }
+.footer ul a:hover{ color:var(--accent); }
+
+.footer-social{ display:flex; gap:12px; }
+.footer-social a{
+  width:34px; height:34px;
+  border:1px solid var(--hairline);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px;
+  transition:border-color .2s ease, color .2s ease;
+}
+body.dark .footer-social a{ border-color:var(--hairline-dark); }
+.footer-social a:hover{ border-color:var(--accent); color:var(--accent); }
+
+.footer-newsletter{ display:flex; margin-top:6px; }
+.footer-newsletter input{
+  flex:1;
+  border:1px solid var(--hairline);
+  border-right:none;
+  background:transparent;
+  color:var(--ink);
+  padding:11px 14px;
+  font-size:13.5px;
+  border-radius:var(--radius) 0 0 var(--radius);
+  outline:none;
+}
+body.dark .footer-newsletter input{ border-color:var(--hairline-dark); color:var(--ink-dark); }
+.footer-newsletter input::placeholder{ color:var(--ink-soft); }
+.footer-newsletter button{
+  border:1px solid var(--ink);
+  background:var(--ink);
+  color:var(--bg);
+  padding:0 18px;
+  border-radius:0 var(--radius) var(--radius) 0;
+  font-size:13px; font-weight:600;
+  cursor:pointer;
+}
+body.dark .footer-newsletter button{ border-color:var(--ink-dark); background:var(--ink-dark); color:var(--bg-dark); }
+
+.footer-bottom{
+  border-top:1px solid var(--hairline);
+  padding-top:26px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:13px;
+  color:var(--ink-soft);
+}
+body.dark .footer-bottom{ border-top-color:var(--hairline-dark); color:var(--ink-soft-dark); }
+
+@media (max-width:860px){
+  .footer-grid{ grid-template-columns:1fr 1fr; gap:36px; }
+  .footer-bottom{ flex-direction:column; gap:10px; text-align:center; }
+  .grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:560px){
+  .footer-grid{ grid-template-columns:1fr; }
+  .grid{ grid-template-columns:1fr; }
+  .cart-panel{ width:100%; right:-100%; }
+}
+
+/* theme toggle */
+.theme-toggle{
+  width:36px; height:36px;
+  border-radius:50%;
+  border:1px solid var(--hairline);
+  background:transparent;
+  color:var(--ink);
+  cursor:pointer;
+  font-size:15px;
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color .2s ease, transform .25s ease;
+}
+body.dark .theme-toggle{ border-color:var(--hairline-dark); color:var(--ink-dark); }
+.theme-toggle:hover{ border-color:var(--accent); transform:rotate(20deg); }
+
+/* whatsapp float — kept, restyled to match */
+.wa-float{
+  position:fixed;
+  bottom:28px; left:28px;
+  width:50px; height:50px;
+  border-radius:50%;
+  background:#25D366;
+  color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px;
+  z-index:998;
+  box-shadow:0 8px 24px rgba(0,0,0,0.18);
+  transition:transform .2s ease;
+}
+.wa-float:hover{ transform:scale(1.08); }
+
+</style>
+</head>
+<body>
+
+<div class="cart-scrim" id="scrim" onclick="closeCart()"></div>
+
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <span class="brand-mark"></span>
+      <span class="brand-text">AD-vance <span>3D</span></span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#"><i class="bi bi-house"></i> Home</a></li>
+      <li><a href="#"><i class="bi bi-box"></i> Products</a></li>
+      <li><a href="#"><i class="bi bi-palette"></i> Custom print</a></li>
+      <li><a href="#"><i class="bi bi-heart"></i> Wishlist</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <i class="bi bi-moon-stars" id="themeIcon"></i>
+      </button>
+      <button class="icon-btn" onclick="toggleCart()" aria-label="Open cart">
+        <i class="bi bi-cart3"></i>
+        <span class="cart-badge">3</span>
+      </button>
+      <a class="btn-login" href="#">Log in</a>
+      <button class="nav-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">FDM &amp; resin printing — Pune, India</div>
+    <h1>Precision parts, printed&nbsp;layer&nbsp;by&nbsp;layer.</h1>
+    <p>Upload a model or send us a sketch. We print, finish, and ship — usually within 48 hours.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">Start custom order <i class="bi bi-arrow-right"></i></button>
+      <a class="btn-ghost" href="#">Browse catalogue</a>
+    </div>
+  </div>
+</header>
+
+<section class="strip">
+  <div class="wrap">
+    <div class="strip-head">
+      <h2>Best sellers</h2>
+      <a href="#">View all <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <div class="card-img">
+          <i class="bi bi-box"></i>
+          <button class="card-add" aria-label="Add to cart"><i class="bi bi-plus"></i></button>
+        </div>
+        <div class="card-body">
+          <div class="tag">PLA — 120mm</div>
+          <h3>Articulated dragon</h3>
+          <div class="price">₹649</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img">
+          <i class="bi bi-gem"></i>
+          <button class="card-add" aria-label="Add to cart"><i class="bi bi-plus"></i></button>
+        </div>
+        <div class="card-body">
+          <div class="tag">Resin — 80mm</div>
+          <h3>Desk organiser</h3>
+          <div class="price">₹399</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img">
+          <i class="bi bi-cup-hot"></i>
+          <button class="card-add" aria-label="Add to cart"><i class="bi bi-plus"></i></button>
+        </div>
+        <div class="card-body">
+          <div class="tag">PETG — 95mm</div>
+          <h3>Planter, ribbed</h3>
+          <div class="price">₹299</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-head">
+    <h3>Your cart</h3>
+    <button onclick="closeCart()" aria-label="Close cart"><i class="bi bi-x"></i></button>
+  </div>
+  <div class="cart-items">
+    <div class="cart-item">
+      <img src="https://via.placeholder.com/54" alt="">
+      <div class="cart-item-info">
+        <h4>Articulated dragon</h4>
+        <div class="cart-item-meta">
+          <span>₹649</span>
+          <span class="qty-stepper"><button>−</button>1<button>+</button></span>
+        </div>
+      </div>
+    </div>
+    <div class="cart-item">
+      <img src="https://via.placeholder.com/54" alt="">
+      <div class="cart-item-info">
+        <h4>Desk organiser</h4>
+        <div class="cart-item-meta">
+          <span>₹399</span>
+          <span class="qty-stepper"><button>−</button>1<button>+</button></span>
+        </div>
+      </div>
+    </div>
+    <div class="cart-item">
+      <img src="https://via.placeholder.com/54" alt="">
+      <div class="cart-item-info">
+        <h4>Planter, ribbed</h4>
+        <div class="cart-item-meta">
+          <span>₹299</span>
+          <span class="qty-stepper"><button>−</button>1<button>+</button></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-subtotal"><span>Subtotal</span><span>₹1,347</span></div>
+    <button class="btn-primary">View full cart</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand"><span class="brand-mark"></span><span class="brand-text">AD-vance <span>3D</span></span></span>
+        <p>Custom 3D printing for prototypes, miniatures, and one-off parts. Designed and printed in-house.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        </div>
+      </div>
+      <div>
+        <h6>Shop</h6>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Products</a></li>
+          <li><a href="#">Custom orders</a></li>
+          <li><a href="#">Upload a design</a></li>
+        </ul>
+      </div>
+      <div>
+        <h6>Support</h6>
+        <ul>
+          <li><a href="#">Contact us</a></li>
+          <li><a href="#">Track an order</a></li>
+          <li><a href="#">Returns policy</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h6>Stay updated</h6>
+        <form class="footer-newsletter" onsubmit="return false;">
+          <input type="email" placeholder="you@email.com">
+          <button>Join</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AD-VANCE 3D. All rights reserved.</span>
+      <span>support@advance3d.com · +91 88275 02969</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+<button class="cart-fab" onclick="toggleCart()" aria-label="Open cart">
+  <i class="bi bi-cart3"></i>
+  <span class="cart-badge">3</span>
+</button>
+
+<script>
+window.addEventListener('scroll', function(){
+  document.getElementById('nav').classList.add('inked');
+}, { once:true });
+
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+  document.getElementById('themeIcon').className =
+    document.body.classList.contains('dark') ? 'bi bi-sun' : 'bi bi-moon-stars';
+}
+
+function toggleCart(){
+  document.getElementById('cartPanel').classList.toggle('open');
+  document.getElementById('scrim').classList.toggle('open');
+}
+function closeCart(){
+  document.getElementById('cartPanel').classList.remove('open');
+  document.getElementById('scrim').classList.remove('open');
+}
+</script>
+
+</body>
+</html>

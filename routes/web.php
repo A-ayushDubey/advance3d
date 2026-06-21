@@ -182,3 +182,18 @@ Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggle'])->nam
 
 //     return session('cart', []);
 // });
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/my-orders', [OrderController::class, 'myOrders'])
+        ->name('orders.my');
+
+    Route::get('/order/{id}', [OrderController::class, 'show'])
+        ->name('orders.show');
+
+});
+// Route::get('/admin/dashboard', [OrderController::class, 'adminDashboard'])
+//     ->name('admin.dashboard');
+
+Route::post('/admin/orders/delete/{id}', [OrderController::class, 'deleteOrder'])
+    ->name('admin.orders.delete');
