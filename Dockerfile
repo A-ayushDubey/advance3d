@@ -13,9 +13,6 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan config:clear || true
-RUN php artisan view:clear || true
-
 RUN chmod +x /app/start.sh
 
 CMD ["/bin/bash", "/app/start.sh"]

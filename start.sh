@@ -1,14 +1,18 @@
 #!/bin/bash
-set -e
 
-echo "Running migrations..."
-php artisan migrate --force
+echo "=== Starting Advance3D ==="
 
-echo "Linking storage..."
-php artisan storage:link || true
+echo "=== Clearing config ==="
+php artisan config:clear
 
-echo "Caching config..."
+echo "=== Caching config ==="
 php artisan config:cache
 
-echo "Starting server..."
+echo "=== Running migrations ==="
+php artisan migrate --force
+
+echo "=== Linking storage ==="
+php artisan storage:link || true
+
+echo "=== Starting server on port $PORT ==="
 php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
