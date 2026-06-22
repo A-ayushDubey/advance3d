@@ -16,6 +16,6 @@ RUN composer install --no-dev --optimize-autoloader
 RUN php artisan config:clear || true
 RUN php artisan view:clear || true
 
-EXPOSE 8000
+RUN chmod +x /app/start.sh
 
-CMD php artisan migrate --force; php artisan storage:link; php artisan serve --host=0.0.0.0 --port=$PORT
+CMD ["/bin/bash", "/app/start.sh"]
