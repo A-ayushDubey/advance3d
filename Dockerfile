@@ -1,6 +1,6 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-WORKDIR /var/www/html
+WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
     git unzip curl libzip-dev zip \
@@ -9,26 +9,10 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY . /var/www/html
+COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN sed -i 's/\r//' /app/start.sh && chmod +x /app/start.sh
 
-# Enable mod_rewrite for Laravel
-RUN a2enmod rewrite
-
-# Point Apache to Laravel public folder
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-
-# Add AllowOverride All
-RUN echo '<Directory /var/www/html/public>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' >> /etc/apache2/sites-available/000-default.conf
-
-COPY start.sh /start.sh
-RUN sed -i 's/\r//' /start.sh && chmod +x /start.sh
-
-CMD ["/bin/sh", "/start.sh"]
+CMD ["/bin/sh", "/app/start.sh"]
