@@ -1,20 +1,21 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "PORT IS: $PORT"
 echo "DB_HOST IS: $DB_HOST"
-echo "APP_KEY IS: $APP_KEY"
 
-echo "Running migrations..."
-php artisan migrate --force || echo "Migration failed but continuing..."
+php artisan migrate --force || true
+php artisan storage:link || true
+php artisan config:cache || true
 
-echo "Linking storage..."
-php artisan storage:link || echo "Storage link failed but continuing..."
+# Set Apache port to Railway PORT
+echo "Listen $PORT" > /etc/apache2/ports.conf
+echo "<VirtualHost *:$PORT>" > /etc/apache2/sites-available/000-default.conf
+echo "    DocumentRoot /var/www/html/public" >> /etc/apache2/sites-available/000-default.conf
+echo "    <Directory /var/www/html/public>" >> /etc/apache2/sites-available/000-default.conf
+echo "        AllowOverride All" >> /etc/apache2/sites-available/000-default.conf
+echo "        Require all granted" >> /etc/apache2/sites-available/000-default.conf
+echo "    </Directory>" >> /etc/apache2/sites-available/000-default.conf
+echo "</VirtualHost>" >> /etc/apache2/sites-available/000-default.conf
 
-echo "Clearing config..."
-php artisan config:clear || echo "Config clear failed but continuing..."
-
-echo "Caching config..."
-php artisan config:cache || echo "Config cache failed but continuing..."
-
-echo "Starting server on port ${PORT:-8000}..."
-exec php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+echo "Starting Apache on port $PORT..."
+exec apache2-foreground
