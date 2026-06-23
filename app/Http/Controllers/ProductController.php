@@ -117,6 +117,7 @@ public function store(Request $request)
             'name' => $productData['name'],
             'description' => $productData['description'] ?? '',
             'price' => $productData['price'],
+            'discount'    => $request->discount ?? 0,
             'category' => $productData['category'],
             'stock' => $productData['stock'],
             'image' => $mainImage
@@ -159,6 +160,7 @@ public function update(Request $request, $id)
     $request->validate([
         'name' => 'required|string|max:255',
         'price' => 'required|numeric|min:0',
+        'discount'    => $productData['discount'] ?? 0,
         'category' => 'required|string|max:255',
         'stock' => 'required|integer|min:0',
         'description' => 'nullable|string',
