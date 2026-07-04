@@ -61,6 +61,13 @@
                 <input type="number" name="products[0][stock]" class="form-control" placeholder="Stock" required>
             </div>
 
+            <div class="field-row">
+                <input type="number" name="products[0][discount]" class="form-control" placeholder="Discount % (e.g. 20)" min="0" max="100" step="0.01" value="0">
+                <div class="form-control d-flex align-items-center gap-2" style="background:var(--accent-50,#FFF1EA);border-style:dashed !important;cursor:default;" id="discountPreview-0">
+                    <i class="bi bi-tag"></i> <span>Enter price + discount to preview</span>
+                </div>
+            </div>
+
             <textarea name="products[0][description]" class="form-control" placeholder="Description" rows="3"></textarea>
 
             <!-- IMAGE INPUT -->
@@ -407,6 +414,37 @@ body.dark-mode .btn-admin-secondary{
 
 <script>
 
+// DISCOUNT PREVIEW
+function updateDiscountPreview(i){
+    let box = document.querySelector(`.product-box[data-index="${i}"]`);
+    if(!box) return;
+    let priceInput = box.querySelector(`input[name="products[${i}][price]"]`);
+    let discountInput = box.querySelector(`input[name="products[${i}][discount]"]`);
+    let preview = document.getElementById('discountPreview-' + i);
+    if(!preview) return;
+
+    let price = parseFloat(priceInput?.value) || 0;
+    let discount = parseFloat(discountInput?.value) || 0;
+
+    if(price > 0 && discount > 0){
+        let original = Math.round(price / (1 - discount / 100));
+        preview.innerHTML = `<i class="bi bi-tag"></i> <span>₹${original} → <strong>₹${price}</strong> &nbsp;<span style="background:var(--accent,#FF5A1F);color:#fff;padding:1px 7px;border-radius:2px;font-size:12px;">${discount}% OFF</span></span>`;
+    } else {
+        preview.innerHTML = `<i class="bi bi-tag"></i> <span>Enter price + discount to preview</span>`;
+    }
+}
+
+// wire the static block (index 0) on price change too
+document.addEventListener('DOMContentLoaded', function(){
+    let box0 = document.querySelector('.product-box[data-index="0"]');
+    if(box0){
+        let priceInput = box0.querySelector('input[name="products[0][price]"]');
+        let discountInput = box0.querySelector('input[name="products[0][discount]"]');
+        if(priceInput) priceInput.addEventListener('input', () => updateDiscountPreview(0));
+        if(discountInput) discountInput.addEventListener('input', () => updateDiscountPreview(0));
+    }
+});
+
 let blockIndex = 1;
 
 // store File objects per block index, since a native file input's
@@ -441,6 +479,13 @@ function addProduct(){
                 <input type="number" name="products[${i}][stock]" class="form-control" placeholder="Stock" required>
             </div>
 
+            <div class="field-row">
+                <input type="number" name="products[${i}][discount]" class="form-control" placeholder="Discount % (e.g. 20)" min="0" max="100" step="0.01" value="0" oninput="updateDiscountPreview(${i})">
+                <div class="form-control d-flex align-items-center gap-2" style="background:var(--accent-50,#FFF1EA);border-style:dashed !important;cursor:default;" id="discountPreview-${i}">
+                    <i class="bi bi-tag"></i> <span>Enter price + discount to preview</span>
+                </div>
+            </div>
+
             <textarea name="products[${i}][description]" class="form-control" placeholder="Description" rows="3"></textarea>
 
             <label class="image-drop">
@@ -460,6 +505,13 @@ function addProduct(){
 
     fileStore[i] = [];
     blockIndex++;
+
+    // wire price input so preview updates when price changes too
+    let newBox = document.querySelector(`.product-box[data-index="${i}"]`);
+    if(newBox){
+        let priceInput = newBox.querySelector(`input[name="products[${i}][price]"]`);
+        if(priceInput) priceInput.addEventListener('input', () => updateDiscountPreview(i));
+    }
 
     updateProductCount();
 }

@@ -15,8 +15,29 @@ class Product extends Model
         'discount',
         'image',
         'category',
-        'stock'
+        'stock',
     ];
+
+    // Final price after discount applied
+    public function getDiscountedPriceAttribute()
+    {
+        if ($this->discount > 0) {
+            return round($this->price - ($this->price * $this->discount / 100));
+        }
+        return $this->price;
+    }
+
+    // Amount saved
+    public function getSavingAmountAttribute()
+    {
+        return $this->price - $this->discounted_price;
+    }
+
+    // Has active discount
+    public function getHasDiscountAttribute()
+    {
+        return $this->discount > 0;
+    }
     public function categories()
     {
         return $this->belongsToMany(\App\Models\Category::class);

@@ -350,6 +350,17 @@
         color: var(--ink-dark, #F2F1ED);
     }
 
+    .discount-badge {
+        font-size: 11px;
+        font-weight: 700;
+        background: var(--accent, #FF5A1F);
+        color: #fff;
+        padding: 2px 7px;
+        border-radius: 2px;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
+
     .product-price {
         font-weight: 500;
         font-size: 17px;
@@ -803,10 +814,14 @@
                     <div class="mt-auto">
                         <div class="product-price">
                             <div class="price">
-                                <span class="old"
-                                    >₹{{ $product->price + 200 }}</span
-                                >
+                                @if(isset($product->discount) && $product->discount > 0)
+                                @php $finalPrice = round($product->price - ($product->price * $product->discount / 100)); @endphp
+                                <span class="old">₹{{ $product->price }}</span>
+                                <span class="new">₹{{ $finalPrice }}</span>
+                                <span class="discount-badge">{{ $product->discount }}% OFF</span>
+                                @else
                                 <span class="new">₹{{ $product->price }}</span>
+                                @endif
                             </div>
                         </div>
 
@@ -895,7 +910,14 @@
                         </span>
 
                         <div class="price-md mb-2">
+                            @if(isset($product->discount) && $product->discount > 0)
+                            @php $finalMd = round($product->price - ($product->price * $product->discount / 100)); @endphp
+                            <span style="text-decoration:line-through;color:var(--ink-soft,#6B6B65);font-size:13px;font-family:var(--font-mono,monospace);">₹{{ $product->price }}</span>
+                            ₹{{ $finalMd }}
+                            <span style="font-size:11px;font-weight:700;background:var(--accent,#FF5A1F);color:#fff;padding:2px 7px;border-radius:2px;">{{ $product->discount }}% OFF</span>
+                            @else
                             ₹{{ $product->price }}
+                            @endif
                         </div>
 
                         <p class="desc-md">

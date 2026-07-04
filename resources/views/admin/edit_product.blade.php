@@ -47,6 +47,21 @@
 <input type="number" name="stock" class="form-control" value="{{ $product->stock }}" required>
 </div>
 
+<!-- DISCOUNT -->
+<div class="field-group">
+<label>Discount %</label>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <input type="number" name="discount" id="discountInput" class="form-control"
+           value="{{ $product->discount ?? 0 }}" min="0" max="100" step="0.01"
+           placeholder="e.g. 20" oninput="updateEditPreview()">
+    <div class="form-control d-flex align-items-center gap-2"
+         style="background:var(--accent-50,#FFF1EA);border-style:dashed !important;cursor:default;"
+         id="editDiscountPreview">
+        <i class="bi bi-tag"></i> <span id="editPreviewText">Loading…</span>
+    </div>
+</div>
+</div>
+
 <!-- DESCRIPTION -->
 <div class="field-group">
 <label>Description</label>
@@ -588,6 +603,22 @@ function deleteSelected(){
     });
 
 }
+
+// DISCOUNT PREVIEW
+const editPrice = {{ $product->price }};
+
+function updateEditPreview(){
+    let discount = parseFloat(document.getElementById('discountInput').value) || 0;
+    let el = document.getElementById('editPreviewText');
+    if(discount > 0){
+        let original = Math.round(editPrice / (1 + discount / 100));
+        el.innerHTML = `₹${editPrice} → <strong>₹${original}</strong> &nbsp;<span style="background:var(--accent,#FF5A1F);color:#fff;padding:1px 7px;border-radius:2px;font-size:12px;">${discount}% OFF</span>`;
+    } else {
+        el.innerHTML = 'No discount';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', updateEditPreview);
 
 </script>
 

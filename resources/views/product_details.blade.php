@@ -46,7 +46,16 @@
 
 <h1 class="fw-bold mb-3 product-name">{{ $product->name }}</h1>
 
-<h3 class="fw-bold mb-3 product-price-main">₹{{ $product->price }}</h3>
+<h3 class="fw-bold mb-3 product-price-main">
+@if(isset($product->discount) && $product->discount > 0)
+@php $origDetail = round($product->price / (1 - $product->discount / 100)); @endphp
+<span style="text-decoration:line-through;color:var(--ink-soft,#6B6B65);font-size:1rem;font-weight:400;">₹{{ $origDetail }}</span>
+₹{{ $product->price }}
+<span style="font-size:13px;font-weight:700;background:var(--accent,#FF5A1F);color:#fff;padding:3px 9px;border-radius:2px;vertical-align:middle;">{{ $product->discount }}% OFF</span>
+@else
+₹{{ $product->price }}
+@endif
+</h3>
 
 <p class="text-muted product-desc">{{ $product->description }}</p>
 
@@ -96,7 +105,13 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
 
             <p class="related-name text-dark">
                 {{ $item->name }} <br>
-                <span class="related-price">₹{{ $item->price }}</span><br>
+                @if(isset($item->discount) && $item->discount > 0)
+                @php $origRel = round($item->price / (1 - $item->discount / 100)); @endphp
+                <span class="related-price" style="text-decoration:line-through;font-size:11px;color:var(--ink-soft,#6B6B65);">₹{{ $origRel }}</span>
+                <span class="related-price">₹{{ $item->price }}</span>
+                @else
+                <span class="related-price">₹{{ $item->price }}</span>
+                @endif<br>
 
                 <!-- FIXED LINK -->
                 <a href="/product/{{ $item->id }}" class="btn btn-dark w-100">
@@ -131,7 +146,13 @@ $relatedProducts = \App\Models\Product::where('category', $product->category)
 
             <p class="related-name text-dark">
                 {{ $item->name }} <br>
-                <span class="related-price">₹{{ $item->price }}</span><br>
+                @if(isset($item->discount) && $item->discount > 0)
+                @php $origRel = round($item->price / (1 - $item->discount / 100)); @endphp
+                <span class="related-price" style="text-decoration:line-through;font-size:11px;color:var(--ink-soft,#6B6B65);">₹{{ $origRel }}</span>
+                <span class="related-price">₹{{ $item->price }}</span>
+                @else
+                <span class="related-price">₹{{ $item->price }}</span>
+                @endif<br>
 
                 <a href="/product/{{ $item->id }}" class="btn btn-dark w-100">
                     View Details

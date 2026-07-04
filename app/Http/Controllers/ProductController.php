@@ -114,13 +114,13 @@ public function store(Request $request)
 
         // Create product
         $product = Product::create([
-            'name' => $productData['name'],
+            'name'        => $productData['name'],
             'description' => $productData['description'] ?? '',
-            'price' => $productData['price'],
-            'discount'    => $request->discount ?? 0,
-            'category' => $productData['category'],
-            'stock' => $productData['stock'],
-            'image' => $mainImage
+            'price'       => $productData['price'],
+            'discount'    => isset($productData['discount']) ? floatval($productData['discount']) : 0,
+            'category'    => $productData['category'],
+            'stock'       => $productData['stock'],
+            'image'       => $mainImage,
         ]);
 
         // Save images
@@ -160,7 +160,6 @@ public function update(Request $request, $id)
     $request->validate([
         'name' => 'required|string|max:255',
         'price' => 'required|numeric|min:0',
-        'discount'    => $productData['discount'] ?? 0,
         'category' => 'required|string|max:255',
         'stock' => 'required|integer|min:0',
         'description' => 'nullable|string',
@@ -168,11 +167,12 @@ public function update(Request $request, $id)
     ]);
 
     $product->update([
-        'name' => $request->name,
+        'name'        => $request->name,
         'description' => $request->description ?? '',
-        'price' => $request->price,
-        'category' => $request->category,
-        'stock' => $request->stock
+        'price'       => $request->price,
+        'discount'    => $request->discount ? floatval($request->discount) : 0,
+        'category'    => $request->category,
+        'stock'       => $request->stock,
     ]);
 
     // ADD NEW IMAGES
