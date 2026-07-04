@@ -626,6 +626,337 @@ FLOATING CART
 /* ------------------------------------- */
 </style>
 
+
+<style>
+/* =====================================================
+   ADVANCE 3D — MOBILE FIX v2
+   Clean bottom nav, no duplicates, no overlaps
+===================================================== */
+
+/* ---- GLOBAL ---- */
+@media (max-width: 768px) {
+    html, body { overflow-x: hidden; }
+    .wrap { padding: 0 14px; }
+    .container { padding-left: 12px !important; padding-right: 12px !important; }
+}
+
+/* ---- NAVBAR ON MOBILE ---- */
+@media (max-width: 992px) {
+    .nav .wrap { height: 56px; padding: 0 14px; }
+    .nav .brand-text { font-size: 15px; }
+    .nav .brand-mark { width: 22px; height: 22px; }
+
+    /* Hide cart icon from top navbar on mobile — bottom nav has it */
+    .nav .icon-btn[href*="cart"] { display: none !important; }
+
+    /* Hide hamburger from top navbar on mobile — bottom nav handles navigation */
+    .nav .nav-toggle { display: none !important; }
+
+    /* Keep only: brand + theme toggle on mobile top bar */
+    .nav .nav-actions { gap: 8px; }
+    .nav .icon-btn { width: 32px; height: 32px; font-size: 14px; }
+    .nav .theme-toggle { width: 32px; height: 32px; font-size: 13px; }
+}
+
+/* ---- HIDE FLOATING CART ON MOBILE ---- */
+@media (max-width: 768px) {
+    .floating-cart { display: none !important; }
+}
+
+/* ---- WHATSAPP BUTTON — above bottom nav ---- */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        bottom: 70px !important;
+        left: 12px !important;
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 20px !important;
+    }
+}
+
+/* ---- BOTTOM NAV ---- */
+.bottom-nav {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        height: 58px;
+        background: var(--bg-raised, #fff);
+        border-top: 1px solid var(--hairline, #E8E6E0);
+        z-index: 999;
+        align-items: stretch;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    body.dark-mode .bottom-nav {
+        background: var(--bg-raised-dark, #1A1A19);
+        border-top-color: var(--hairline-dark, #2C2C29);
+    }
+
+    .bottom-nav a {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        font-size: 9.5px;
+        font-weight: 500;
+        color: var(--ink-soft, #9B9A92);
+        text-decoration: none;
+        transition: color 0.2s;
+        position: relative;
+        letter-spacing: 0.01em;
+    }
+    body.dark-mode .bottom-nav a { color: var(--ink-soft-dark, #9B9A92); }
+
+    .bottom-nav a i { font-size: 19px; line-height: 1; }
+
+    .bottom-nav a.active { color: var(--accent, #FF5A1F); }
+    .bottom-nav a:hover { color: var(--accent, #FF5A1F); }
+
+    .bottom-nav a.active i {
+        transform: scale(1.1);
+    }
+
+    /* Active indicator dot */
+    .bottom-nav a.active::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 50%;
+        transform: translateX(-50%);
+        width: 20px; height: 2px;
+        background: var(--accent, #FF5A1F);
+        border-radius: 0 0 3px 3px;
+    }
+
+    .bnav-badge {
+        position: absolute;
+        top: 5px;
+        left: calc(50% + 6px);
+        background: var(--accent, #FF5A1F);
+        color: #fff;
+        font-size: 8px;
+        min-width: 14px; height: 14px;
+        border-radius: 99px;
+        display: flex; align-items: center; justify-content: center;
+        padding: 0 3px;
+        font-family: var(--font-mono, monospace);
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    /* Push page content above bottom nav */
+    main { padding-bottom: 66px !important; }
+    .footer { margin-bottom: 58px !important; }
+}
+
+/* ---- HERO SECTION MOBILE ---- */
+@media (max-width: 768px) {
+    .hero-3d { min-height: calc(100svh - 56px); padding: 40px 16px 80px; }
+    .hero-title { font-size: clamp(1.8rem, 9vw, 3rem) !important; letter-spacing: -0.02em !important; }
+    .hero-sub { font-size: 13.5px !important; padding: 0 8px; }
+    .hero-btns { flex-direction: column; align-items: stretch; gap: 10px; padding: 0 8px; }
+    .btn-hero-primary, .btn-hero-outline { width: 100%; max-width: none; justify-content: center; }
+    .hero-stats { gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .hero-stat-num { font-size: 1.3rem; }
+    .hero-stat-label { font-size: 9px; }
+    .hero-badge { font-size: 10px; padding: 4px 12px; }
+    .scroll-hint { display: none; }
+}
+
+/* ---- PRODUCT GRID MOBILE ---- */
+@media (max-width: 768px) {
+    /* 2 columns */
+    #productGrid .col-6 { padding-left: 6px !important; padding-right: 6px !important; }
+    #productGrid .row { margin-left: -6px !important; margin-right: -6px !important; }
+    .premium-img { height: 155px !important; }
+    .product-title { font-size: 12px !important; line-height: 1.3; }
+    .price .new { font-size: 13px !important; }
+    .price .old { font-size: 10px !important; }
+    .discount-badge { font-size: 9px !important; padding: 1px 5px !important; }
+    .badge-new { font-size: 8px !important; padding: 2px 6px !important; top: 8px; left: 8px; }
+    .wishlist { width: 28px !important; height: 28px !important; font-size: 12px !important; top: 8px; right: 8px; }
+    .quick-view-btn { display: none !important; }
+    .card-body { padding: 10px 10px 12px !important; }
+    .rating { font-size: 12px !important; }
+    .gap-2.d-flex .btn-dark { font-size: 11px !important; padding: 7px 6px !important; }
+    .gap-2.d-flex .btn-success { padding: 7px 10px !important; }
+}
+
+/* ---- FILTER BAR MOBILE ---- */
+@media (max-width: 768px) {
+    .filter-top { gap: 10px !important; }
+    .filter-top > div:first-child { flex-wrap: wrap; gap: 6px !important; }
+    .filter-btn { font-size: 11.5px !important; padding: 6px 10px !important; }
+    .product-count { font-size: 11px !important; }
+}
+
+/* ---- PRODUCTS HERO ---- */
+@media (max-width: 768px) {
+    .products-hero { height: 180px !important; }
+    .products-hero h1 { font-size: 18px !important; }
+    .products-hero p { font-size: 12px; }
+}
+
+/* ---- WHY / PROCESS / SERVICES ---- */
+@media (max-width: 768px) {
+    .why-grid,
+    .services-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .why-card, .svc-card { padding: 18px 14px !important; }
+    .process-steps { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+    .process-steps::before { display: none !important; }
+    .why-section, .products-section, .process-section,
+    .gallery-section, .services-section,
+    .testimonials-section, .faq-section { padding: 48px 0 !important; }
+    .cta-section { padding: 56px 0 !important; }
+}
+
+/* ---- STATS ---- */
+@media (max-width: 768px) {
+    .stats-band { padding: 36px 0 !important; }
+    .stats-row { grid-template-columns: 1fr 1fr !important; }
+    .stat-num { font-size: 1.6rem !important; }
+    .stat-item { padding: 12px !important; border-right-color: rgba(255,255,255,0.15) !important; }
+}
+
+/* ---- TESTIMONIALS / FAQ ---- */
+@media (max-width: 768px) {
+    .testi-grid { grid-template-columns: 1fr !important; }
+    .faq-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ---- LAB GALLERY ---- */
+@media (max-width: 768px) {
+    .lab-grid {
+        grid-template-columns: 1fr 1fr !important;
+        grid-auto-rows: 120px !important;
+        gap: 8px !important;
+    }
+    .lab-item.big { grid-column: span 2 !important; }
+}
+
+/* ---- SECTION TITLE ---- */
+@media (max-width: 768px) {
+    .section-title { font-size: 1.35rem !important; }
+    .section-sub { font-size: 13px !important; }
+    .cta-content h2 { font-size: 1.6rem !important; }
+    .cta-content p { font-size: 13px; }
+}
+
+/* ---- CART PAGE ---- */
+@media (max-width: 768px) {
+    .cart-table thead { display: none; }
+    .cart-table tbody tr {
+        display: block;
+        border-bottom: 1px solid var(--hairline, #E8E6E0) !important;
+        padding: 12px 0;
+    }
+    .cart-table tbody td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 3px 12px !important;
+        border: none !important;
+        font-size: 13px;
+    }
+    .cart-thumb { width: 48px !important; height: 48px !important; }
+    .cart-product-name { font-size: 13px !important; }
+    .cart-actions { align-items: stretch !important; }
+    .btn-cart-secondary,
+    .btn-cart-primary,
+    .btn-cart-whatsapp { max-width: none !important; font-size: 13px !important; }
+    .cart-total-value { font-size: 1.3rem !important; }
+    .qty-input-cart { width: 52px !important; }
+}
+
+/* ---- CART SIDEBAR MOBILE ---- */
+@media (max-width: 768px) {
+    .cart-sidebar {
+        width: 100% !important;
+        right: auto !important;
+        left: 0 !important;
+        top: auto !important;
+        bottom: -100% !important;
+        height: 80vh;
+        border-radius: 20px 20px 0 0;
+        border-left: none !important;
+        border-top: 1px solid var(--hairline, #E8E6E0) !important;
+        transition: bottom 0.35s cubic-bezier(.16,.84,.44,1) !important;
+    }
+    .cart-sidebar.open {
+        bottom: 58px !important;
+        right: auto !important;
+    }
+    body.dark-mode .cart-sidebar {
+        border-top-color: var(--hairline-dark, #2C2C29) !important;
+    }
+}
+
+/* ---- PRODUCT DETAIL ---- */
+@media (max-width: 768px) {
+    .main-image-box { height: 250px !important; }
+    .thumb-img { width: 50px !important; height: 50px !important; }
+    .product-name { font-size: 1.15rem !important; }
+    .product-price-main { font-size: 1.25rem !important; }
+    .col-md-6.text-center { margin-bottom: 8px; }
+}
+
+/* ---- FOOTER MOBILE ---- */
+@media (max-width: 768px) {
+    .footer { padding: 36px 0 16px; }
+    .footer-grid { grid-template-columns: 1fr !important; gap: 20px !important; padding-bottom: 28px; }
+    .footer-bottom { flex-direction: column; gap: 6px; text-align: center; font-size: 11px; }
+    .footer h6 { margin-bottom: 10px; }
+    .footer li { margin-bottom: 7px; }
+    .footer-newsletter { flex-direction: column; gap: 8px; }
+    .footer-newsletter input { border-radius: 3px !important; border-right: 1px solid var(--hairline, #E8E6E0) !important; }
+    .footer-newsletter button { border-radius: 3px !important; padding: 10px; }
+    .footer-social { gap: 10px; }
+}
+
+/* ---- AUTH PAGES ---- */
+@media (max-width: 768px) {
+    .auth-wrapper { padding: 0.8rem !important; align-items: flex-start; padding-top: 2rem !important; }
+    .auth-card { padding: 1.4rem 1rem !important; border-radius: 12px !important; }
+    .social-row { grid-template-columns: 1fr !important; }
+    .row-2 { grid-template-columns: 1fr !important; }
+}
+
+/* ---- ADMIN FORMS ---- */
+@media (max-width: 768px) {
+    .field-row { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .admin-card.form-card { padding: 14px !important; }
+    .product-box-body { padding: 14px !important; }
+    .image-box .img-preview { height: 120px !important; }
+}
+
+/* ---- WISHLIST MOBILE ---- */
+@media (max-width: 768px) {
+    .wishlist-img { width: 58px !important; height: 58px !important; }
+    .wishlist-info .name { font-size: 13px !important; }
+    .wishlist-item { padding: 10px 12px !important; gap: 10px !important; }
+}
+
+/* ---- MODAL ---- */
+@media (max-width: 768px) {
+    .modal-dialog { margin: 6px !important; }
+    .modal-body { padding: 14px !important; }
+    .main-img-md { height: 160px !important; }
+    .quick-modal-md .col-md-5,
+    .quick-modal-md .col-md-7 { width: 100% !important; }
+}
+
+/* ---- TICKER ---- */
+@media (max-width: 768px) {
+    .ticker-item { font-size: 9.5px !important; padding: 0 14px !important; }
+}
+
+</style>
+
 </head>
 
 
@@ -1181,6 +1512,8 @@ NAVBAR
         </div>
     @endauth
 
+    <!-- MOBILE TOGGLE hidden trigger for bottom nav -->
+    <button id="mobileMenuToggle" style="display:none" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"></button>
     <!-- MOBILE TOGGLE -->
     <button class="nav-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-label="Menu">
         <i class="bi bi-list"></i>
@@ -1256,11 +1589,21 @@ MOBILE SIDE NAV
                         <div style="font-weight:600;">{{ auth()->user()->name }}</div>
                         <small class="text-muted">{{ auth()->user()->email }}</small>
                     </div>
+                    
                 </div>
 
+                <button class="btn-danger w-100 mt-3">
                 @if(auth()->user()->role === 'admin')
                     <a href="{{ route('admin.products') }}" class="nav-link">⚡ Admin Panel</a>
                 @endif
+                </button>
+                <button class="btn-danger w-100 mt-3">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('orders.my') }}">
+                        <i class="bi bi-bag-check"></i> My Orders
+                    </a>
+                </li>
+                </button>
 
                 <button class="btn-danger w-100 mt-3"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -1568,5 +1911,79 @@ document.querySelectorAll('#mobileMenu .nav-link').forEach(link => {
 <i class="bi bi-whatsapp"></i>
 
 </a>
+
+<!-- BOTTOM NAV - Mobile only -->
+<nav class="bottom-nav" id="bottomNav">
+    <a href="{{ route('home') }}" id="bnav-home">
+        <i class="bi bi-house"></i>
+        <span>Home</span>
+    </a>
+    <a href="{{ route('products') }}" id="bnav-products">
+        <i class="bi bi-box"></i>
+        <span>Products</span>
+    </a>
+    <a href="{{ route('wishlist') }}" id="bnav-wishlist">
+        <i class="bi bi-heart"></i>
+        <span>Wishlist</span>
+    </a>
+    <a href="{{ route('cart') }}" id="bnav-cart">
+        <span class="bnav-badge" id="bnavCartCount">{{ session('cart') ? count(session('cart')) : 0 }}</span>
+        <i class="bi bi-cart3"></i>
+        <span>Cart</span>
+    </a>
+    @auth
+    <a href="#" onclick="event.preventDefault(); document.getElementById('mobileMenuToggle').click();" id="bnav-menu">
+        <i class="bi bi-list"></i>
+        <span>Menu</span>
+    </a>
+    @else
+    <a href="{{ route('login') }}" id="bnav-login">
+        <i class="bi bi-person"></i>
+        <span>Login</span>
+    </a>
+    @endauth
+</nav>
+
+<script>
+// Active bottom nav highlight
+(function(){
+    const path = window.location.pathname;
+    const map = {
+        '/': 'bnav-home',
+        '/products': 'bnav-products',
+        '/wishlist': 'bnav-wishlist',
+        '/cart': 'bnav-cart',
+    };
+    // Home exact match
+    if(path === '/') {
+        const el = document.getElementById('bnav-home');
+        if(el) el.classList.add('active');
+        return;
+    }
+    for(let [route, id] of Object.entries(map)){
+        if(route !== '/' && path.startsWith(route)){
+            const el = document.getElementById(id);
+            if(el) el.classList.add('active');
+            break;
+        }
+    }
+})();
+
+// Sync cart count to bottom nav
+const origUpdateCart = window.loadCartItems;
+document.addEventListener('DOMContentLoaded', function(){
+    // Update bottom nav cart badge when cart changes
+    const observer = new MutationObserver(function(){
+        const topBadge = document.getElementById('cartCount');
+        const botBadge = document.getElementById('bnavCartCount');
+        if(topBadge && botBadge){
+            botBadge.textContent = topBadge.textContent;
+        }
+    });
+    const topBadge = document.getElementById('cartCount');
+    if(topBadge) observer.observe(topBadge, { childList: true, characterData: true, subtree: true });
+});
+</script>
+
 </body>
 </html>
