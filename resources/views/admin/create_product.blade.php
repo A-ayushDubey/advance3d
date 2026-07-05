@@ -13,6 +13,9 @@
             <small class="admin-subtitle">Bulk upload — fill out one or more product blocks below</small>
         </div>
     </div>
+    <a href="/admin/products" class="btn-admin-secondary">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
 </div>
 
 {{-- SUCCESS / ERROR --}}
