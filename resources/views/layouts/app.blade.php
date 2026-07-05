@@ -5,7 +5,7 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/STLLoader.js"></script> -->
 <!-- ----------192.168.29.143----------- -->
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <title>AD-VANCE 3D</title>
 
@@ -1390,6 +1390,65 @@ body.dark-mode .social-bottom{ border-color:var(--hairline-dark, #2C2C29); }
 .social-bottom a:hover{ border-color:var(--accent, #FF5A1F); color:var(--accent, #FF5A1F); }
 body.dark-mode .social-bottom a{ border-color:var(--hairline-dark, #2C2C29); color:var(--ink-soft-dark, #9B9A92); }
 
+/* =====================================================
+   MOBILE UX PATCH
+   Safe areas (notch / home-indicator), real tap targets,
+   no blue tap-flash, tidier stacking of the fixed elements.
+===================================================== */
+
+/* Kill the grey tap-flash and make taps feel instant everywhere */
+a, button, .btn, .icon-btn, .theme-toggle, .bottom-nav a, .whatsapp-float, .floating-cart{
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+@media (max-width: 768px){
+
+    /* ---- Respect the iPhone home-indicator / Android gesture bar ---- */
+    .bottom-nav{
+        height: calc(58px + env(safe-area-inset-bottom));
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    main{ padding-bottom: calc(66px + env(safe-area-inset-bottom)) !important; }
+    .footer{ margin-bottom: calc(58px + env(safe-area-inset-bottom)) !important; }
+
+    .whatsapp-float{
+        bottom: calc(70px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .cart-sidebar.open{
+        bottom: calc(58px + env(safe-area-inset-bottom)) !important;
+    }
+
+    /* ---- Real 44px+ tap targets (Apple/Google minimum) ---- */
+    .bottom-nav a{ min-height: 48px; }
+    .nav .icon-btn, .nav .theme-toggle{ width: 40px !important; height: 40px !important; }
+    .wishlist{ width: 34px !important; height: 34px !important; }
+    .gap-2.d-flex .btn-dark,
+    .gap-2.d-flex .btn-success{ min-height: 40px !important; }
+    .filter-btn{ min-height: 36px; }
+
+    /* ---- Bottom-nav polish: bounce on tap, clearer active state ---- */
+    .bottom-nav a:active i{ transform: scale(0.88); }
+    .bottom-nav a i{ transition: transform .15s ease; }
+
+    /* ---- Prevent horizontal scroll from any stray wide element ---- */
+    #productGrid, .why-grid, .services-grid, .testi-grid, .lab-grid{ max-width: 100%; }
+
+    /* ---- Cart-sidebar sheet: add a drag-handle affordance ---- */
+    .cart-sidebar::before{
+        content:"";
+        position:absolute;
+        top:8px; left:50%;
+        transform:translateX(-50%);
+        width:36px; height:4px;
+        border-radius:99px;
+        background:var(--hairline, #E8E6E0);
+    }
+    body.dark-mode .cart-sidebar::before{ background:var(--hairline-dark, #2C2C29); }
+    .cart-sidebar .cart-head{ padding-top:20px; }
+}
+
 </style>
 
 <!-- ===========================
@@ -1512,8 +1571,6 @@ NAVBAR
         </div>
     @endauth
 
-    <!-- MOBILE TOGGLE hidden trigger for bottom nav -->
-    <button id="mobileMenuToggle" style="display:none" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"></button>
     <!-- MOBILE TOGGLE -->
     <button class="nav-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-label="Menu">
         <i class="bi bi-list"></i>
@@ -1597,7 +1654,7 @@ MOBILE SIDE NAV
                     <a href="{{ route('admin.products') }}" class="nav-link">⚡ Admin Panel</a>
                 @endif
                 </button>
-                <button class="btn-danger w-100 mt-3">
+                <button class="btn-danger w-100 mt-3">  
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('orders.my') }}">
                         <i class="bi bi-bag-check"></i> My Orders
@@ -1764,17 +1821,18 @@ function toggleTheme(){
 
 function toggleCart(){
     let sidebar = document.getElementById("cartSidebar");
-    if(!sidebar) return; // 🔥 prevents crash
+    let scrim = document.getElementById("scrim");
+    if(!sidebar) return; // prevents crash if sidebar isn't on the page
 
     sidebar.classList.toggle("open");
+    if(scrim) scrim.classList.toggle("open", sidebar.classList.contains("open"));
+
+    // lock background scroll while the sidebar is open (mobile bottom-sheet)
+    document.body.style.overflow = sidebar.classList.contains("open") ? "hidden" : "";
 
     if(sidebar.classList.contains("open")){
         loadCartItems();
     }
-}
-function toggleCart(){
-    document.getElementById("cartSidebar").classList.toggle("open");
-    loadCartItems();
 }
 
 
@@ -1815,7 +1873,11 @@ function loadCartItems(){
 }
 /* ================= AJAX ADD TO CART ================= */
 function closeCart(){
-    document.getElementById("cartSidebar").classList.remove("open");
+    let sidebar = document.getElementById("cartSidebar");
+    let scrim = document.getElementById("scrim");
+    if(sidebar) sidebar.classList.remove("open");
+    if(scrim) scrim.classList.remove("open");
+    document.body.style.overflow = "";
 }
 document.addEventListener("click", function(e){
     let sidebar = document.getElementById("cartSidebar");
@@ -1827,7 +1889,7 @@ document.addEventListener("click", function(e){
         !sidebar.contains(e.target) &&
         !e.target.closest(".floating-cart")
     ){
-        sidebar.classList.remove("open");
+        closeCart();
     }
 });
 
@@ -1932,7 +1994,7 @@ document.querySelectorAll('#mobileMenu .nav-link').forEach(link => {
         <span>Cart</span>
     </a>
     @auth
-    <a href="#" onclick="event.preventDefault(); document.getElementById('mobileMenuToggle').click();" id="bnav-menu">
+    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" onclick="event.preventDefault(); bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('mobileMenu')).show();" id="bnav-menu">
         <i class="bi bi-list"></i>
         <span>Menu</span>
     </a>
