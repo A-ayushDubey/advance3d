@@ -47,6 +47,20 @@
             font-size: 24px;
         }
     }
+    @media (max-width: 480px) {
+        .products-hero {
+            height: 220px;
+        }
+        .products-hero > div {
+            padding: 0 12px;
+        }
+        .products-hero h1 {
+            font-size: 20px;
+        }
+        .products-hero p {
+            font-size: 13px;
+        }
+    }
 
     /* =========================
        PRODUCT GRID WIDTHS (unchanged logic)
@@ -191,6 +205,35 @@
     body.dark-mode .product-count { color: var(--ink-soft-dark, #9B9A92); }
     body.dark-mode .clear-btn { color: var(--ink-soft-dark, #9B9A92); }
 
+    @media (max-width: 768px) {
+        /* Two clean full-width rows instead of everything wrapping
+           unpredictably: filters on top, sort + count below */
+        .filter-top {
+            flex-direction: column;
+            align-items: stretch !important;
+            gap: 12px !important;
+        }
+        .filter-top > div {
+            width: 100%;
+            justify-content: space-between;
+        }
+        .filter-btn {
+            min-height: 40px;
+            padding: 8px 12px;
+        }
+        /* Keep dropdowns on-screen: fill the available row width
+           instead of a fixed min-width that can overshoot the viewport */
+        .dropdown-menu {
+            min-width: 0;
+            width: max-content;
+            max-width: calc(100vw - 48px);
+        }
+        .sort-box .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+    }
+
     /* =========================
        BADGES / WISHLIST
     ========================= */
@@ -258,11 +301,13 @@
 
     .premium-card {
         width: 100%;
+        height: 100%;
         background: var(--bg-raised, #fff);
         border-radius: 6px;
         overflow: hidden;
         transition: 0.3s ease;
         border: 1px solid var(--hairline, #E8E6E0);
+        display: flex;
         flex-direction: column;
         position: relative;
     }
@@ -278,6 +323,7 @@
         height: 240px;
         overflow: hidden;
         background: var(--accent-50, #FFF1EA);
+        flex-shrink: 0;
     }
 
     .premium-img img {
@@ -316,6 +362,8 @@
         padding: 16px;
         flex-direction: column;
         justify-content: space-between;
+        flex: 1;
+        min-width: 0;
     }
 
     .product-title {
@@ -324,15 +372,29 @@
         margin-top: 2px;
         color: var(--ink, #1A1A1A);
         font-family: var(--font-body, sans-serif);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: calc(1.3em * 2);
     }
     body.dark-mode .product-title {
         color: var(--ink-dark, #F2F1ED);
     }
 
     .price {
-        gap: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 10px;
         align-items: center;
         font-family: var(--font-mono, monospace);
+        max-width: 100%;
+    }
+
+    .price .old,
+    .price .new {
+        white-space: nowrap;
     }
 
     .price .old {
@@ -463,13 +525,32 @@
         border-color: var(--accent, #FF5A1F) !important;
     }
 
-    @media (max-width: 576px) {
-        .premium-img { height: 200px; }
-        .product-title { font-size: 13.5px; }
-        .product-price { font-size: 15px; }
+    .gap-2.d-flex {
+        flex-wrap: nowrap;
     }
+    .gap-2.d-flex .btn-dark {
+        flex: 1 1 auto;
+        width: auto !important; /* overrides Bootstrap's w-100, which fought the cart button for space */
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .gap-2.d-flex .btn-success {
+        flex: 0 0 auto;
+        min-width: 44px; /* real tap target, not just icon-width */
+    }
+
     @media (max-width: 768px) {
         .premium-img { height: 180px; }
+    }
+    @media (max-width: 576px) {
+        .premium-img { height: 150px; }
+        .product-title { font-size: 13.5px; }
+        .product-price { font-size: 15px; }
+        .price .new { font-size: 14px; }
+        .price .old { font-size: 11px; }
+        .discount-badge { font-size: 9px; padding: 1px 5px; }
     }
 
     /* =========================
@@ -609,6 +690,16 @@
         height: 78px;
         object-fit: cover;
         border-radius: 3px;
+    }
+
+    @media (max-width: 480px) {
+        .modal-body .row.g-2 > .col-3 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+        .related-md img {
+            height: 90px;
+        }
     }
 
     /* =========================
@@ -781,7 +872,7 @@
                 <!-- IMAGE -->
                 <div class="premium-img">
                     <a href="/product/{{ $product->id }}">
-                        <img src="/product_images/{{ $product->image }}" />
+                        <img loading="lazy" decoding="async" src="/product_images/{{ $product->image }}" />
                     </a>
 
                     <!-- WISHLIST -->

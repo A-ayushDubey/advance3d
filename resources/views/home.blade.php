@@ -53,6 +53,25 @@
         font-weight: 400;
     }
 
+    .hero-overlay > div {
+        padding: 0 20px;
+        width: 100%;
+    }
+
+    .hero-overlay .btn {
+        display: inline-block;
+    }
+
+    @media (max-width: 576px) {
+        .hero-overlay .btn {
+            display: block;
+            width: 100%;
+            max-width: 320px;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }
+
     /* Buttons — shared ink / outline system */
 
     .btn {
@@ -327,6 +346,18 @@
             margin-top: 10px;
         }
     }
+    @media (max-width: 768px) {
+        .premium-img { height: 155px; }
+        .premium-content { padding: 10px 10px 12px; }
+        .product-title { font-size: 12px; }
+        .price { gap: 4px 6px; }
+        .price .new { font-size: 13px; }
+        .price .old { font-size: 10px; }
+        .badge-sale { font-size: 9px; padding: 2px 8px; }
+        .discount-badge { font-size: 9px; padding: 1px 5px; }
+        /* Services cards read better full-width than squeezed 2-up on phones */
+        .services-row > div { flex: 0 0 100%; max-width: 100%; }
+    }
 
     /* =========================
        DARK MODE — TOKEN-BASED
@@ -574,11 +605,13 @@
         position: relative;
         background: var(--accent-50, #FFF1EA);
         padding: 0;
+        height: 220px;
+        overflow: hidden;
     }
 
     .premium-img img {
         width: 100%;
-        height: 220px;
+        height: 100%;
         border-radius: 0;
         object-fit: cover;
         transition: 0.5s;
@@ -605,6 +638,9 @@
 
     .premium-content {
         padding: 16px 16px 18px;
+        max-width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
     }
 
     .product-title {
@@ -613,6 +649,12 @@
         line-height: 1.4;
         margin-bottom: 8px;
         color: var(--ink, #1A1A1A);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: calc(1.4em * 2);
     }
 
     .rating {
@@ -625,11 +667,43 @@
         font-size: 12px;
     }
 
+    /* Equal-height product cards: the grid column already stretches to
+       match the tallest sibling (Bootstrap rows are flex by default) —
+       we just need the card itself, and its content column, to actually
+       fill that height instead of only taking up its own content size. */
+    .product-row > div {
+        display: flex;
+    }
+    .product-row > div > a {
+        display: flex;
+        width: 100%;
+    }
+    .premium-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .premium-img {
+        flex-shrink: 0; /* image keeps its fixed height, never gets squeezed */
+    }
+    .premium-content {
+        display: flex;
+        flex-direction: column;
+        flex: 1; /* fills whatever space is left below the image */
+    }
     .price {
         display: flex;
-        gap: 10px;
+        flex-wrap: wrap;
+        gap: 6px 10px;
         align-items: center;
         font-family: var(--font-mono, monospace);
+        max-width: 100%;
+        margin-top: auto; /* price always sits flush with the card's bottom edge */
+    }
+
+    .price .old,
+    .price .new {
+        white-space: nowrap;
     }
 
     .price .old {
@@ -872,6 +946,45 @@
         opacity: 1;
         transform: translateY(0);
     }
+
+    .price {
+        flex-wrap: wrap;
+        gap: 6px 10px;
+        align-items: center;
+        font-family: var(--font-mono, monospace);
+    }
+
+    .price .old {
+        text-decoration: line-through;
+        color: var(--ink-soft, #6B6B65);
+        font-size: 13px;
+    }
+
+    .price .new {
+        font-size: 17px;
+        font-weight: 500;
+        color: var(--ink, #1A1A1A);
+    }
+    body.dark-mode .price .new {
+        color: var(--ink-dark, #F2F1ED);
+    }
+
+    .discount-badge {
+        font-size: 11px;
+        font-weight: 700;
+        background: var(--accent, #FF5A1F);
+        color: #fff;
+        padding: 2px 7px;
+        border-radius: 2px;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
+
+    .product-price {
+        font-weight: 500;
+        font-size: 17px;
+        margin-top: 6px;
+    }
 </style>
 
 <!-- =========================
@@ -879,7 +992,15 @@
 ========================= -->
 
 <section class="hero-video">
-    <video autoplay muted loop>
+    <video
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline="true"
+        preload="metadata"
+        poster="https://images.unsplash.com/photo-1650288619836-ae092ba88d31?q=80&w=800&auto=format&fit=crop"
+    >
         <source
             src="https://www.pexels.com/download/video/26621066/"
             type="video/mp4"
@@ -919,6 +1040,7 @@
                     <span>₹299+</span>
                 </div>
             </div>
+            
 
             <div class="col-12 col-md-4">
                 <div class="price-box">
@@ -979,7 +1101,7 @@
 
             <!-- BIG CENTER ITEM -->
             <div class="lab-item big">
-                <img src="https://makerworld.bblmw.com/makerworld/model/US785629d640df37/design/2025-11-18_fc807149f6f17.webp?x-oss-process=image/resize,w_1000/format,webp">
+                <img loading="lazy" decoding="async" src="https://makerworld.bblmw.com/makerworld/model/US785629d640df37/design/2025-11-18_fc807149f6f17.webp?x-oss-process=image/resize,w_1000/format,webp">
                 <div class="lab-overlay">
                     <h5>Dragon Masterpiece</h5>
                 </div>
@@ -987,19 +1109,19 @@
 
             <!-- SMALL ITEMS -->
             <div class="lab-item">
-                <img src="https://makerworld.bblmw.com/makerworld/model/US2bcdfcd556d945/design/2024-01-08_e7cb2c5edc4fa8.jpeg?x-oss-process=image/resize,w_1000/format,webp">
+                <img loading="lazy" decoding="async" src="https://makerworld.bblmw.com/makerworld/model/US2bcdfcd556d945/design/2024-01-08_e7cb2c5edc4fa8.jpeg?x-oss-process=image/resize,w_1000/format,webp">
             </div>
 
             <div class="lab-item">
-                <img src="https://makerworld.bblmw.com/makerworld/model/USe1c9fcb2ca73e1/design/2024-08-13_e879dacdf6e89.jpg">
+                <img loading="lazy" decoding="async" src="https://makerworld.bblmw.com/makerworld/model/USe1c9fcb2ca73e1/design/2024-08-13_e879dacdf6e89.jpg">
             </div>
 
             <div class="lab-item">
-                <img src="https://makerworld.bblmw.com/makerworld/model/1212806/comment/317cb100-03d8-11f0-b06e-975637e7b92e.jpg">
+                <img loading="lazy" decoding="async" src="https://makerworld.bblmw.com/makerworld/model/1212806/comment/317cb100-03d8-11f0-b06e-975637e7b92e.jpg">
             </div>
 
             <div class="lab-item">
-                <img src="https://makerworld.bblmw.com/makerworld/model/USe1c9fcb2ca73e1/design/2024-08-13_e879dacdf6e89.jpg">
+                <img loading="lazy" decoding="async" src="https://makerworld.bblmw.com/makerworld/model/USe1c9fcb2ca73e1/design/2024-08-13_e879dacdf6e89.jpg">
             </div>
 
         </div>
@@ -1017,7 +1139,7 @@
         
     <h2 class="text-center fw-bold mb-5">Featured Products</h2>
 
-    <div class="row">
+    <div class="row product-row">
         @foreach(\App\Models\Product::latest()->take(6)->get() as $product)
 
         <div class="col-6 col-md-4 mb-4">
@@ -1028,7 +1150,7 @@
 
                 <!-- IMAGE -->
                 <div class="premium-img">
-                    <img src="/product_images/{{ $product->image }}" />
+                    <img loading="lazy" decoding="async" src="/product_images/{{ $product->image }}" />
                     
                     <!-- Sale Badge -->
                     <span class="badge-sale">Sale</span>
@@ -1049,8 +1171,14 @@
 
                     <!-- Price -->
                     <div class="price">
-                        <span class="old">₹{{ $product->price + 200 }}</span>
-                        <span class="new">₹{{ $product->price }}</span>
+                        @if(isset($product->discount) && $product->discount > 0)
+                                @php $finalPrice = round($product->price - ($product->price * $product->discount / 100)); @endphp
+                                <span class="old">₹{{ $product->price }}</span>
+                                <span class="new">₹{{ $finalPrice }}</span>
+                                <span class="discount-badge">{{ $product->discount }}% OFF</span>
+                                @else
+                                <span class="new">₹{{ $product->price }}</span>
+                                @endif
                     </div>
 
                 </div>
@@ -1115,7 +1243,7 @@
     <div class="container">
         <h2 class="text-center fw-bold mb-5">Our 3D Printing Services</h2>
 
-        <div class="row text-center">
+        <div class="row text-center services-row">
             <div class="col-6 col-md-4 mb-3">
                 <div class="card shadow-sm p-4 h-100">
                     <h4><i class="bi bi-bricks"></i> Custom 3D Printing</h4>
@@ -1169,6 +1297,7 @@
 
         <div class="carousel-item">
             <img
+                loading="lazy" decoding="async"
                 src="https://images.unsplash.com/photo-1728724569841-05305ee197df?q=80&w=1332&auto=format&fit=crop"
                 class="d-block w-100"
                 style="height: 500px; object-fit: cover"
@@ -1181,6 +1310,7 @@
 
         <div class="carousel-item">
             <img
+                loading="lazy" decoding="async"
                 src="https://images.unsplash.com/photo-1707735325033-af8b8ad6a01f?q=80&w=1333&auto=format&fit=crop"
                 class="d-block w-100"
                 style="height: 500px; object-fit: cover"

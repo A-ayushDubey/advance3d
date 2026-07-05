@@ -611,7 +611,8 @@ function updateEditPreview(){
     let discount = parseFloat(document.getElementById('discountInput').value) || 0;
     let el = document.getElementById('editPreviewText');
     if(discount > 0){
-        let original = Math.round(editPrice / (1 + discount / 100));
+        // let original = Math.round(editPrice / (1 + discount / 100));
+        let original= Math.round(editPrice - (editPrice * discount / 100));
         el.innerHTML = `₹${editPrice} → <strong>₹${original}</strong> &nbsp;<span style="background:var(--accent,#FF5A1F);color:#fff;padding:1px 7px;border-radius:2px;font-size:12px;">${discount}% OFF</span>`;
     } else {
         el.innerHTML = 'No discount';

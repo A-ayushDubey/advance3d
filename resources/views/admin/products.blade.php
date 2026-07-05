@@ -89,6 +89,8 @@
 <th>Image</th>
 <th>Name</th>
 <th>Price</th>
+<th>discount Price</th>
+<th>Percent %</th>
 <th>Stock</th>
 <th class="text-center">Actions</th>
 </tr>
@@ -115,6 +117,13 @@
 
 <td class="price-cell">
 ₹{{ $product->price }}
+</td>
+
+<td class="price-cell">
+₹{{number_format($product->price * (1-($product->discount / 100)),2)}}
+</td>
+<td class="price-cell">
+{{ $product->discount }}%
 </td>
 
 <td>

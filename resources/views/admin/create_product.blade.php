@@ -427,7 +427,8 @@ function updateDiscountPreview(i){
     let discount = parseFloat(discountInput?.value) || 0;
 
     if(price > 0 && discount > 0){
-        let original = Math.round(price / (1 - discount / 100));
+        // let original = Math.round(price / (1 + discount / 100));
+        let original= Math.round(price - (price * discount / 100));
         preview.innerHTML = `<i class="bi bi-tag"></i> <span>₹${original} → <strong>₹${price}</strong> &nbsp;<span style="background:var(--accent,#FF5A1F);color:#fff;padding:1px 7px;border-radius:2px;font-size:12px;">${discount}% OFF</span></span>`;
     } else {
         preview.innerHTML = `<i class="bi bi-tag"></i> <span>Enter price + discount to preview</span>`;
