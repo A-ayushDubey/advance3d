@@ -145,7 +145,7 @@ $steps = ['pending', 'processing', 'shipped', 'delivered'];
 /* ===== PAGE WRAP — light grey bg ===== */
 .mo-wrap {
     min-height: 100vh;
-    background: #F5F5F3;
+    /* background: #F5F5F3; */
     padding: 2.5rem 0 5rem;
 }
 
@@ -565,6 +565,145 @@ $steps = ['pending', 'processing', 'shipped', 'delivered'];
     .mo-card-actions { flex-direction: row; align-items: center; justify-content: space-between; }
     .mo-step-label   { display: none; }
     .mo-item-names   { display: none; }
+}
+
+/* ===========================
+   DARK MODE
+=========================== */
+
+body.dark-mode .mo-wrap{
+    /* background:#0f1115; */
+}
+
+/* Header */
+body.dark-mode .mo-title{
+    color:#fff;
+}
+
+body.dark-mode .mo-sub{
+    color:#9ca3af;
+}
+
+body.dark-mode .mo-shop-btn{
+    background:#1b1f27;
+    color:#fff;
+    border-color:#2b313d;
+    box-shadow:none;
+}
+
+body.dark-mode .mo-shop-btn:hover{
+    background:#242b35;
+    color:#fff;
+}
+
+/* Cards */
+body.dark-mode .mo-card{
+    background:#1b1f27;
+    border:1px solid #2d3442;
+    box-shadow:none;
+}
+
+body.dark-mode .mo-card:hover{
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+}
+
+/* Text */
+body.dark-mode .mo-order-id,
+body.dark-mode .mo-total{
+    color:#fff;
+}
+
+body.dark-mode .mo-date,
+body.dark-mode .mo-time,
+body.dark-mode .mo-sub{
+    color:#9ca3af;
+}
+
+body.dark-mode .mo-dot{
+    background:#555;
+}
+
+/* Divider */
+body.dark-mode .mo-inner-divider{
+    border-color:#2d3442;
+}
+
+/* Item placeholders */
+body.dark-mode .mo-thumb-ph,
+body.dark-mode .mo-thumb-more{
+    background:#252b35;
+    border-color:#353d4b;
+    color:#aaa;
+}
+
+body.dark-mode .mo-thumb-img{
+    border-color:#353d4b;
+}
+
+/* Chips */
+body.dark-mode .mo-item-name-chip{
+    background:#252b35;
+    border-color:#353d4b;
+    color:#ddd;
+}
+
+body.dark-mode .mo-chip-muted{
+    color:#8b93a5;
+}
+
+/* Progress */
+body.dark-mode .mo-track{
+    background:#323845;
+}
+
+body.dark-mode .mo-step-label{
+    color:#777;
+}
+
+body.dark-mode .mo-step.done .mo-step-label,
+body.dark-mode .mo-step.active .mo-step-label{
+    color:#ddd;
+}
+
+/* Buttons */
+body.dark-mode .mo-track-btn{
+    background:#252b35;
+    border-color:#353d4b;
+    color:#fff;
+    box-shadow:none;
+}
+
+body.dark-mode .mo-track-btn:hover{
+    background:#2d3442;
+    color:#fff;
+}
+
+/* Empty State */
+body.dark-mode .mo-empty-title{
+    color:#fff;
+}
+
+body.dark-mode .mo-empty-sub{
+    color:#9ca3af;
+}
+
+body.dark-mode .mo-empty-icon{
+    background:#1b1f27;
+    border-color:#353d4b;
+    color:#777;
+}
+
+body.dark-mode .mo-empty-ring{
+    border-color:#444;
+}
+
+body.dark-mode .mo-browse-btn{
+    background:#ff6b2c;
+    color:#fff;
+}
+
+body.dark-mode .mo-browse-btn:hover{
+    background:#ff7d44;
 }
 </style>
 

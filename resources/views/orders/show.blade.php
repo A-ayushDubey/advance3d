@@ -1,7 +1,7 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 @extends('layouts.app')
 
 @section('content')
-
 @php
 $statusConfig = [
     'pending'    => ['icon' => 'ti-clock',       'color' => 'amber',  'label' => 'Pending'],
@@ -33,10 +33,17 @@ $stepMessages = [
 
 <div class="os-page">
 
+    
+
     {{-- Back --}}
-    <a href="{{ route('orders.my') }}" class="os-back">
-        <i class="ti ti-arrow-left"></i> My orders
-    </a>
+    <div class="so-header">
+        <div>
+            <h1 class="so-title">My orders</h1>
+        </div>
+        <a href="{{ route('orders.my') }}" class="so-shop-btn">
+                <i class="ti ti-plus"></i> Back
+        </a>
+    </div>
 
     {{-- ===== HERO BANNER ===== --}}
     <div class="os-hero os-hero--{{ $cfg['color'] }}">
@@ -229,6 +236,7 @@ $stepMessages = [
 </div>
 
 <style>
+  
 .os-page {
     max-width: 680px;
     margin: 2rem auto;
@@ -236,16 +244,26 @@ $stepMessages = [
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    /* border:5px solid red; */
+}
+
+body.dark-mode .os-back{
+    color: #fff;
 }
 
 /* Back */
 .os-back {
     display: inline-flex; align-items: center; gap: 5px;
-    font-size: 13px; color: var(--color-text-secondary);
+    /* font-size: 13px; color: var(--color-text-secondary); */
     text-decoration: none; margin-bottom: .25rem;
-    transition: color .15s, gap .15s;
+    /* transition: color .15s, gap .15s; */
+
+    font-size: 22px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0 0 3px;
 }
-.os-back:hover { color: var(--color-text-primary); gap: 8px; }
+/* .os-back:hover { color: var(--color-text-primary); gap: 8px; } */
 
 /* ===== HERO ===== */
 .os-hero {
@@ -337,11 +355,13 @@ $stepMessages = [
 
 /* ===== CARD ===== */
 .os-card {
-    background: var(--color-background-primary);
+    /* background: var(--color-background-primary); */
+    background:#eff6e0;
     border: 0.5px solid var(--color-border-tertiary);
     border-radius: 14px;
     padding: 1.25rem 1.375rem;
     transition: border-color .2s;
+    
 }
 .os-card:hover { border-color: var(--color-border-secondary); }
 
@@ -386,7 +406,8 @@ $stepMessages = [
     left: calc(-50% + 19px);
     right: calc(50% + 19px);
     height: 2px;
-    background: var(--color-border-tertiary);
+    /* background: var(--color-border-tertiary); */
+    background:#25514f;
     overflow: hidden;
 }
 .os-conn-fill {
@@ -401,7 +422,8 @@ $stepMessages = [
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 16px;
-    background: var(--color-background-secondary);
+    /* background: var(--color-background-secondary); */
+    background:white;
     border: 0.5px solid var(--color-border-tertiary);
     color: var(--color-text-tertiary);
     transition: all .3s;
@@ -566,7 +588,8 @@ $stepMessages = [
     padding: 1rem 1.25rem;
     border-radius: 14px;
     border: 0.5px solid var(--color-border-tertiary);
-    background: var(--color-background-primary);
+    /* background: var(--color-background-primary); */
+    background:#eff6e0;
 }
 .os-help-icon {
     font-size: 22px; color: var(--color-text-secondary); flex-shrink: 0;
@@ -620,6 +643,211 @@ $stepMessages = [
     .os-help { flex-wrap: wrap; }
     .os-help-btn { margin-left: 0; width: 100%; justify-content: center; }
     .os-hero-status { font-size: 17px; }
+}
+
+
+
+
+/* ==========================================
+   DARK MODE
+   (Works if app.blade.php adds .dark to body/html)
+========================================== */
+
+.dark .os-page{
+    color:#f3f4f6;
+    
+}
+body.dark-mode .os-step-btn{
+    background:#1b1f27;
+    border:1px solid #2d3442;
+    box-shadow:none;
+    
+}
+  body.dark-mode .os-card{
+    background:#1b1f27;
+    border:1px solid #2d3442;
+    box-shadow:none;
+}
+  body.dark-mode .os-help{
+    background:#1b1f27;
+    border:1px solid #2d3442;
+    box-shadow:none;
+}
+
+.dark .os-back{
+    color:#9ca3af;
+}
+.dark .os-back:hover{
+    color:#fff;
+}
+
+/* Cards */
+.dark .os-card{
+    background:#171717;
+    border-color:#2d2d2d;
+}
+
+.dark .os-card:hover{
+    border-color:#404040;
+}
+
+/* Labels */
+.dark .os-card-label,
+.dark .os-info-key,
+.dark .os-muted,
+.dark .os-item-unit,
+.dark .os-help-sub,
+.dark .os-step-name{
+    color:#9ca3af;
+}
+
+/* Text */
+.dark .os-item-name,
+.dark .os-summary-row,
+.dark .os-total-amount,
+.dark .os-info-val,
+.dark .os-help-title{
+    color:#f5f5f5;
+}
+
+/* Product item */
+.dark .os-item{
+    background:#202020;
+    border-color:#323232;
+}
+
+.dark .os-item:hover{
+    background:#252525;
+    border-color:#4b5563;
+}
+
+.dark .os-item-img,
+.dark .os-item-placeholder{
+    border-color:#383838;
+}
+
+.dark .os-item-placeholder{
+    background:#262626;
+    color:#777;
+}
+
+/* Quantity */
+.dark .os-qty-pill,
+.dark .os-count-pill{
+    background:#262626;
+    border-color:#383838;
+    color:#d1d5db;
+}
+
+/* Divider */
+.dark .os-divider{
+    border-color:#303030;
+}
+
+/* Step Tracker */
+.dark .os-step-btn{
+    background:#262626;
+    border-color:#404040;
+    color:#8b8b8b;
+}
+
+.dark .os-conn{
+    background:#333;
+}
+
+/* Delivery icons */
+.dark .os-info-icon{
+    background:#242424;
+    border-color:#3a3a3a;
+    color:#d1d5db;
+}
+
+/* Help */
+.dark .os-help{
+    background:#171717;
+    border-color:#2d2d2d;
+}
+
+.dark .os-help-icon{
+    color:#d1d5db;
+}
+
+.dark .os-help-btn{
+    background:#14532d;
+    color:#dcfce7;
+    border-color:#166534;
+}
+
+.dark .os-help-btn:hover{
+    background:#166534;
+}
+
+/* Hero keeps its colors but improve contrast */
+.dark .os-hero{
+    box-shadow:0 10px 30px rgba(0,0,0,.45);
+}
+
+/* Hero glass icon */
+.dark .os-hero-icon-wrap{
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(10px);
+}
+
+/* Floating dots */
+.dark .os-hero-dots span{
+    background:rgba(255,255,255,.08);
+}
+
+
+
+.so-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.so-shop-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 15px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #e0e0e0;
+    border-radius: 9px;
+    color: #1a1a1a;
+    text-decoration: none;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    transition: box-shadow .15s, background .15s;
+    white-space: nowrap;
+}
+.so-shop-btn:hover {
+    background: #fafafa;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    color: #1a1a1a;
+}
+body.dark-mode .so-shop-btn{
+    background:#1b1f27;
+    color:#fff;
+    border-color:#2b313d;
+    box-shadow:none;
+}
+
+body.dark-mode .so-shop-btn:hover{
+    background:#242b35;
+    color:#fff;
+}
+.so-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0 0 3px;
+}
+body.dark-mode .so-title{
+    color:#fff;
 }
 </style>
 

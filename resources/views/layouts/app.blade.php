@@ -82,177 +82,6 @@ a{ color:inherit; text-decoration:none; }
 ::selection{ background:var(--accent); color:#fff; }
 
 /* =====================================================
-   NAVBAR
-===================================================== */
-
-.nav{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  height:var(--nav-h);
-  display:flex;
-  align-items:center;
-  background:rgba(250,250,248,0.82);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--hairline);
-  transition:background .35s ease, border-color .35s ease;
-}
-
-body.dark .nav{
-  background:rgba(15,15,15,0.78);
-  border-bottom-color:var(--hairline-dark);
-}
-
-/* the "print line" signature: an underline that draws itself
-   in once, the first time the user scrolls past the hero */
-.nav::after{
-  content:"";
-  position:absolute;
-  left:0; bottom:-1px;
-  height:1px;
-  width:0%;
-  background:var(--accent);
-  transition:width 1.1s cubic-bezier(.16,.84,.44,1);
-}
-
-.nav.inked::after{ width:100%; }
-
-.nav .wrap{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  width:100%;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.brand-mark{
-  width:30px; height:30px;
-  border:1.5px solid var(--ink);
-  border-radius:50%;
-  position:relative;
-  flex-shrink:0;
-}
-body.dark .brand-mark{ border-color:var(--ink-dark); }
-.brand-mark::before{
-  content:"";
-  position:absolute;
-  inset:5px;
-  border:1.5px solid var(--accent);
-  border-radius:50%;
-}
-
-.brand-text{
-  font-family:var(--font-display);
-  font-weight:600;
-  font-size:18px;
-  letter-spacing:-0.01em;
-}
-.brand-text span{ color:var(--accent); }
-
-.nav-links{
-  display:flex;
-  align-items:center;
-  gap:36px;
-  list-style:none;
-  margin:0; padding:0;
-}
-
-.nav-links a{
-  font-size:14px;
-  font-weight:500;
-  color:var(--ink-soft);
-  display:flex;
-  align-items:center;
-  gap:7px;
-  padding:6px 0;
-  position:relative;
-  transition:color .2s ease;
-}
-body.dark .nav-links a{ color:var(--ink-soft-dark); }
-
-.nav-links a:hover{ color:var(--ink); }
-body.dark .nav-links a:hover{ color:var(--ink-dark); }
-
-.nav-links a::after{
-  content:"";
-  position:absolute;
-  left:0; bottom:-3px;
-  width:0; height:1px;
-  background:var(--accent);
-  transition:width .25s ease;
-}
-.nav-links a:hover::after{ width:100%; }
-
-.nav-links a i{ font-size:15px; }
-
-.nav-actions{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.icon-btn{
-  width:36px; height:36px;
-  border-radius:50%;
-  border:1px solid var(--hairline);
-  display:flex; align-items:center; justify-content:center;
-  font-size:15px;
-  background:transparent;
-  color:var(--ink);
-  cursor:pointer;
-  transition:border-color .2s ease, transform .15s ease, background .2s ease;
-  position:relative;
-}
-body.dark .icon-btn{ border-color:var(--hairline-dark); color:var(--ink-dark); }
-.icon-btn:hover{ border-color:var(--accent); transform:translateY(-1px); }
-
-.cart-badge{
-  position:absolute;
-  top:-5px; right:-5px;
-  background:var(--accent);
-  color:#fff;
-  font-family:var(--font-mono);
-  font-size:10px;
-  width:16px; height:16px;
-  border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  line-height:1;
-}
-
-.btn-login{
-  font-size:13.5px;
-  font-weight:600;
-  padding:9px 18px;
-  border:1px solid var(--ink);
-  border-radius:var(--radius);
-  transition:background .2s ease, color .2s ease;
-}
-body.dark .btn-login{ border-color:var(--ink-dark); }
-.btn-login:hover{ background:var(--ink); color:var(--bg); }
-body.dark .btn-login:hover{ background:var(--ink-dark); color:var(--bg-dark); }
-
-.nav-toggle{
-  display:none;
-  background:none; border:none;
-  font-size:22px;
-  color:var(--ink);
-  cursor:pointer;
-}
-body.dark .nav-toggle{ color:var(--ink-dark); }
-
-@media (max-width:920px){
-  .nav-links{ display:none; }
-  .nav-toggle{ display:block; }
-  .btn-login{ display:none; }
-}
-
-/* =====================================================
    FOOTER
 ===================================================== */
 
@@ -357,43 +186,7 @@ body.dark .footer-bottom{ border-top-color:var(--hairline-dark); color:var(--ink
   .cart-panel{ width:100%; right:-100%; }
 }
 
-/* theme toggle */
-.theme-toggle{
-  width:36px; height:36px;
-  border-radius:50%;
-  border:1px solid var(--hairline);
-  background:transparent;
-  color:var(--ink);
-  cursor:pointer;
-  font-size:15px;
-  display:flex; align-items:center; justify-content:center;
-  transition:border-color .2s ease, transform .25s ease;
-}
-body.dark .theme-toggle{ border-color:var(--hairline-dark); color:var(--ink-dark); }
-.theme-toggle:hover{ border-color:var(--accent); transform:rotate(20deg); }
-
 /* whatsapp float — kept, restyled to match */
-.wa-float{
-  position:fixed;
-  bottom:28px; left:28px;
-  width:50px; height:50px;
-  border-radius:50%;
-  background:#25D366;
-  color:#fff;
-  display:flex; align-items:center; justify-content:center;
-  font-size:22px;
-  z-index:998;
-  box-shadow:0 8px 24px rgba(0,0,0,0.18);
-  transition:transform .2s ease;
-}
-.wa-float:hover{ transform:scale(1.08); }
-
-/* ------ */
-/* ------ */
-/* ------ */
-/* ------ */
-/* ------ */
-
 .whatsapp-float{
 position:fixed;
 bottom:20px;
@@ -418,6 +211,134 @@ transform:scale(1.1);
 color:white;
 }
 
+/* ------ */
+/* ------ */
+ .advance-offcanvas {
+        background: #161616;
+        color: #F2F0EA;
+        width: 290px;
+    }
+ 
+    .advance-header {
+        border-bottom: none;
+        padding: 1.25rem 1.25rem 0.5rem;
+    }
+ 
+    .advance-brand {
+        color: #F2F0EA;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+    }
+ 
+    .text-orange { color: #FF6A2C !important; }
+ 
+    .advance-close {
+        filter: invert(1) grayscale(100%) brightness(200%);
+        opacity: 0.6;
+    }
+ 
+    .advance-body {
+        padding: 0.5rem 1.25rem 1.25rem;
+    }
+ 
+    .advance-nav {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+ 
+    .advance-link {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 12px 4px;
+        color: #D8D6D0 !important;
+        font-size: 15px;
+        text-decoration: none;
+    }
+ 
+    .advance-link i { font-size: 18px; color: #807E78; width: 18px; text-align: center; }
+ 
+    .advance-link.active,
+    .advance-link:hover {
+        color: #FF6A2C !important;
+    }
+ 
+    .advance-link.active i,
+    .advance-link:hover i { color: #FF6A2C; }
+ 
+    .advance-count { font-size: 12px; color: #807E78; }
+ 
+    .advance-divider {
+        height: 1px;
+        background: #242424;
+        margin-bottom: 20px;
+    }
+ 
+    .advance-account {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 22px;
+    }
+ 
+    .advance-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #242424;
+        color: #D8D6D0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 500;
+        flex-shrink: 0;
+    }
+ 
+    .advance-account-name { font-size: 13px; color: #F2F0EA; }
+    .advance-account-email { font-size: 12px; color: #807E78; }
+ 
+    .advance-action {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 10px 4px;
+        color: #D8D6D0;
+        font-size: 14px;
+        text-decoration: none;
+    }
+ 
+    .advance-action:hover { color: #F2F0EA; }
+    .advance-action i { font-size: 16px; color: #807E78; }
+ 
+    .advance-action-danger,
+    .advance-action-danger i { color: #c47a63; }
+    .advance-action-danger:hover { color: #c47a63; }
+ 
+    .advance-login-link {
+        display: block;
+        text-align: center;
+        padding: 10px;
+        color: #FF6A2C;
+        text-decoration: none;
+        font-size: 14px;
+    }
+ 
+    .advance-social {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding-top: 16px;
+    }
+ 
+    .advance-social a { color: #807E78; text-decoration: none; font-size: 16px; }
+    .advance-social a:hover { color: #FF6A2C; }
+/* ------ */
+/* ------ */
+/* ------ */
+
 .object-fit-cover{
 object-fit: cover;
 }
@@ -426,40 +347,6 @@ object-fit: cover;
 vertical-align: middle;
 }
 
-/* ================= LOADER ================= */
-
-#pageLoader{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#000;
-z-index:9999;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-color:white;
-}
-
-.spinner{
-width:50px;
-height:50px;
-border:5px solid #fff;
-border-top:5px solid transparent;
-border-radius:50%;
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg);}
-100%{transform:rotate(360deg);}
-}
-#pageLoader h5{
-    font-size:16px;
-    text-align:center;
-}
 /* ================= BUTTONS ================= */
 @media (max-width: 576px){
     .whatsapp-float{
@@ -500,19 +387,6 @@ width:200px;
 height:200px;
 }
 
-/* BRAND TEXT STYLE */
-.brand-text{
-    font-weight:700;
-    font-size:20px;
-    letter-spacing:1px;
-    color:#333;
-}
-
-/* ORANGE COLOR (matching your logo) */
-.text-orange{
-    color:#ff6a00;
-}
-
 /* DARK MODE FIX */
 body.dark-mode .brand-text{
     color:white;
@@ -524,106 +398,18 @@ body.dark-mode .brand-text{
 
 /* Mobile Navbar */
 @media (max-width: 992px){
-
-    .navbar{
-        height: auto;
-        padding: 10px 0;
-    }
-
-    .navbar-brand{
-        font-size: 18px;
-    }
-
-    .navbar-logo{
-        max-height: 40px;
-    }
-
-    .navbar-collapse{
-        background: white;
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 10px;
-    }
-
-    body.dark-mode .navbar-collapse{
-        background: #1e1e1e;
-    }
-
     .navbar-nav{
         align-items: flex-start !important;
     }
-
-    .navbar .btn{
-        margin-left: 0;
-        margin-top: 8px;
-        width: 100%;
-    }
 }
 
-/* =========================
-FLOATING CART
-========================= */
-.cart-sidebar{
-    position: fixed;
-    top: 0;
-    right: -350px;
-    width: 320px;
-    height: 100%;
-    background: white;
-    box-shadow: -5px 0 20px rgba(0,0,0,0.2);
-    z-index: 9999;
-    transition: 0.3s;
+@media (max-width:860px){
+    .grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:560px){
+    .grid{ grid-template-columns:1fr; }
 }
 
-.cart-sidebar.open{
-    right: 0;
-}
-.floating-cart{
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    background: #0d6efd;
-    color: white;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    cursor: pointer;
-    z-index: 9999;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    transition: 0.3s;
-}
-
-.floating-cart:hover{
-    transform: scale(1.1);
-}
-
-.floating-cart span{
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: red;
-    color: white;
-    font-size: 12px;
-    padding: 2px 6px;
-    border-radius: 50%;
-}
-
-
-/* SIDEBAR BASE */
-.offcanvas{
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(10px);
-    width: 270px;
-}
-
-/* SAME NAV LINK STYLE */
-
-/* ------------------------------------- */
-/* ------------------------------------- */
 </style>
 
 
@@ -648,9 +434,6 @@ FLOATING CART
 
     /* Hide cart icon from top navbar on mobile — bottom nav has it */
     .nav .icon-btn[href*="cart"] { display: none !important; }
-
-    /* Hide hamburger from top navbar on mobile — bottom nav handles navigation */
-    .nav .nav-toggle { display: none !important; }
 
     /* Keep only: brand + theme toggle on mobile top bar */
     .nav .nav-actions { gap: 8px; }
@@ -1175,7 +958,7 @@ body.dark-mode .cart-sidebar .btn-primary{ background:var(--ink-dark, #F2F1ED); 
 }
 body.dark-mode .nav{ background:rgba(15,15,15,0.78); border-bottom-color:var(--hairline-dark, #2C2C29); }
 
-.nav .wrap{ max-width:1180px; margin:0 auto; height:72px; display:flex; align-items:center; justify-content:space-between; }
+.nav .wrap{ width:100%; max-width:1180px; margin:0 auto; height:72px; display:flex; align-items:center; justify-content:space-between; gap:24px; box-sizing:border-box; }
 
 .nav .brand{ display:flex; align-items:center; gap:10px; }
 .nav .brand-mark{
@@ -1219,7 +1002,7 @@ body.dark-mode .nav .nav-links a:hover{ color:var(--ink-dark, #F2F1ED); }
 }
 .nav .nav-links a:hover::after{ width:100%; }
 
-.nav .nav-actions{ display:flex; align-items:center; gap:12px; }
+.nav .nav-actions{ display:flex; align-items:center; gap:16px; }
 
 .nav .icon-btn{
     position:relative;
@@ -1236,7 +1019,7 @@ body.dark-mode .nav .nav-links a:hover{ color:var(--ink-dark, #F2F1ED); }
 body.dark-mode .nav .icon-btn{ border-color:var(--hairline-dark, #2C2C29); color:var(--ink-dark, #F2F1ED); }
 
 .nav .cart-badge{
-    position:absolute; top:-5px; right:-5px;
+    position:absolute; top:-5px; right:-8px;
     background:var(--accent, #FF5A1F); color:#fff;
     font-family:var(--font-mono, monospace); font-size:10px;
     min-width:16px; height:16px;
@@ -1270,16 +1053,6 @@ body.dark-mode .nav .theme-toggle{ border-color:var(--hairline-dark, #2C2C29); c
 body.dark-mode .nav .btn-login{ border-color:var(--ink-dark, #F2F1ED); color:var(--ink-dark, #F2F1ED); }
 body.dark-mode .nav .btn-login:hover{ background:var(--ink-dark, #F2F1ED); color:var(--bg-dark, #0F0F0F); }
 
-.nav .nav-toggle{
-    display:none;
-    background:none; border:none;
-    font-size:21px;
-    color:var(--ink, #1A1A1A);
-    cursor:pointer;
-}
-body.dark-mode .nav .nav-toggle{ color:var(--ink-dark, #F2F1ED); }
-
-/* user dropdown trigger, restyled to match nav-links */
 .nav .user-trigger{
     font-size:14px; font-weight:500;
     color:var(--ink-soft, #6B6B65);
@@ -1307,75 +1080,10 @@ body.dark-mode .nav .dropdown-item:hover{ background:var(--accent-50-dark, #2A1A
     .nav .nav-links{ display:none !important; }
     .nav .btn-login{ display:none !important; }
     .nav .user-trigger{ display:none !important; }
-    .nav .nav-toggle{ display:flex !important; align-items:center; justify-content:center; }
 }
 
-/* ---- MOBILE OFFCANVAS ---- */
-.offcanvas{
-    background:rgba(250,250,248,0.97);
-    backdrop-filter:blur(14px);
-    width:280px;
-    border-right:1px solid var(--hairline, #E8E6E0);
-}
-body.dark-mode .offcanvas{ background:rgba(15,15,15,0.97); border-right-color:var(--hairline-dark, #2C2C29); }
-
-.offcanvas-header{ border-bottom:1px solid var(--hairline, #E8E6E0) !important; }
-body.dark-mode .offcanvas-header{ border-bottom-color:var(--hairline-dark, #2C2C29) !important; }
-
-.offcanvas .navbar-nav .nav-link{
-    font-size:14.5px; font-weight:500;
-    padding:12px 10px;
-    border-radius:3px;
-    color:var(--ink-soft, #6B6B65);
-    display:flex; align-items:center; gap:10px;
-    transition:.2s ease;
-}
-.offcanvas .navbar-nav .nav-link:hover{ background:var(--accent-50, #FFF1EA); color:var(--ink, #1A1A1A); padding-left:14px; }
-body.dark-mode .offcanvas .navbar-nav .nav-link{ color:var(--ink-soft-dark, #9B9A92); }
-body.dark-mode .offcanvas .navbar-nav .nav-link:hover{ background:var(--accent-50-dark, #2A1A12); color:var(--ink-dark, #F2F1ED); }
-
-.offcanvas .badge.bg-primary{
-    background:var(--accent, #FF5A1F) !important;
-    font-family:var(--font-mono, monospace);
-    font-weight:500; font-size:11px;
-}
-
-.offcanvas .theme-toggle{
-    width:34px; height:34px;
-    border-radius:50%;
-    border:1px solid var(--hairline, #E8E6E0);
-    background:transparent;
-    color:var(--ink, #1A1A1A);
-    font-size:14px;
-    display:flex; align-items:center; justify-content:center;
-    transition:border-color .2s ease;
-}
-.offcanvas .theme-toggle:hover{ border-color:var(--accent, #FF5A1F); }
-body.dark-mode .offcanvas .theme-toggle{ border-color:var(--hairline-dark, #2C2C29); color:var(--ink-dark, #F2F1ED); }
-
-.profile-icon{
-    width:38px; height:38px;
-    background:var(--ink, #1A1A1A);
-    color:var(--bg, #FAFAF8);
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-weight:600;
-    font-family:var(--font-display, sans-serif);
-}
-body.dark-mode .profile-icon{ background:var(--ink-dark, #F2F1ED); color:var(--bg-dark, #0F0F0F); }
-
-.offcanvas .btn-danger{
-    background:transparent;
-    border:1px solid var(--hairline, #E8E6E0);
-    color:var(--ink, #1A1A1A);
-    font-weight:600;
-    font-size:13.5px;
-    border-radius:3px;
-    padding:11px;
-    transition:.2s ease;
-}
-.offcanvas .btn-danger:hover{ border-color:var(--accent, #FF5A1F); color:var(--accent, #FF5A1F); }
-body.dark-mode .offcanvas .btn-danger{ border-color:var(--hairline-dark, #2C2C29); color:var(--ink-dark, #F2F1ED); }
+/* ---- MOBILE OFFCANVAS (advance-offcanvas is the single source of truth
+       for the mobile drawer's look — see head <style>. No overrides here.) ---- */
 
 .social-bottom{ border-top:1px solid var(--hairline, #E8E6E0); padding-top:18px; }
 body.dark-mode .social-bottom{ border-color:var(--hairline-dark, #2C2C29); }
@@ -1447,6 +1155,12 @@ a, button, .btn, .icon-btn, .theme-toggle, .bottom-nav a, .whatsapp-float, .floa
     }
     body.dark-mode .cart-sidebar::before{ background:var(--hairline-dark, #2C2C29); }
     .cart-sidebar .cart-head{ padding-top:20px; }
+
+    /* ---- Mobile drawer (advance-offcanvas): width + safe-area only ---- */
+    .advance-offcanvas{
+        width: min(290px, 82vw) !important;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 }
 
 </style>
@@ -1533,7 +1247,6 @@ NAVBAR
     <!-- AUTH -->
     @guest
         <a class="btn-login d-none d-lg-inline-flex" href="{{ route('login') }}">Log in</a>
-        <!-- <a class="btn-login d-none d-lg-inline-flex" href="{{ route('register') }}">Register</a> -->
     @endguest
 
     @auth
@@ -1547,8 +1260,6 @@ NAVBAR
 
                 @if(auth()->user()->role === 'admin')
                     <li><a class="dropdown-item fw-bold" href="{{ route('admin.products') }}">⚡ Admin Panel</a></li>
-                    <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li><a class="dropdown-item" href="{{ route('admin.orders') }}">Orders</a></li>
                     <li><hr class="dropdown-divider"></li>
                 @endif
 
@@ -1571,11 +1282,6 @@ NAVBAR
         </div>
     @endauth
 
-    <!-- MOBILE TOGGLE -->
-    <button class="nav-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-label="Menu">
-        <i class="bi bi-list"></i>
-    </button>
-
 </div>
 
 </div>
@@ -1585,107 +1291,104 @@ NAVBAR
 <!-- ===========================
 MOBILE SIDE NAV
 =========================== -->
-<div class="offcanvas offcanvas-start d-flex flex-column" tabindex="-1" id="mobileMenu">
-
-    <div class="offcanvas-header">
-        <a class="brand" href="{{ route('home') }}">
-            <span class="brand-mark"></span>
+<div class="offcanvas offcanvas-start d-flex flex-column advance-offcanvas" tabindex="-1" id="mobileMenu">
+ 
+    <div class="offcanvas-header advance-header">
+        <a class="brand advance-brand" href="{{ route('home') }}">
             <span class="brand-text">
                 AD-<span class="text-orange">vance</span> <span class="text-orange">3D</span>
             </span>
         </a>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        <button type="button" class="btn-close advance-close" data-bs-dismiss="offcanvas" aria-label="Close menu"></button>
     </div>
-
-    <div class="offcanvas-body d-flex flex-column justify-content-between">
-
-        <ul class="navbar-nav">
-
+ 
+    <div class="offcanvas-body d-flex flex-column advance-body">
+ 
+        <ul class="navbar-nav advance-nav">
+ 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('home') }}"><i class="bi bi-house"></i> Home</a>
+                <a class="nav-link advance-link active" href="{{ route('home') }}">
+                    <i class="bi bi-house" aria-hidden="true"></i> Home
+                </a>
             </li>
-
+ 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('products') }}"><i class="bi bi-box"></i> Products</a>
+                <a class="nav-link advance-link" href="{{ route('products') }}">
+                    <i class="bi bi-box" aria-hidden="true"></i> Products
+                </a>
             </li>
-
+ 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('custom.order') }}"><i class="bi bi-palette"></i> Custom Print</a>
+                <a class="nav-link advance-link" href="{{ route('custom.order') }}">
+                    <i class="bi bi-palette" aria-hidden="true"></i> Custom print
+                </a>
             </li>
-
+ 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('wishlist') }}"><i class="bi bi-heart"></i> Wishlist</a>
+                <a class="nav-link advance-link" href="{{ route('wishlist') }}">
+                    <i class="bi bi-heart" aria-hidden="true"></i> Wishlist
+                </a>
             </li>
-
+ 
             <li class="nav-item">
-                <a class="nav-link d-flex justify-content-between align-items-center" href="{{ route('cart') }}">
-                    <span><i class="bi bi-cart"></i> Cart</span>
-                    <span class="badge bg-primary" id="mobileCartCount">
+                <a class="nav-link advance-link d-flex justify-content-between align-items-center" href="{{ route('cart') }}">
+                    <span><i class="bi bi-cart" aria-hidden="true"></i> Cart</span>
+                    <span class="advance-count" id="mobileCartCount">
                         {{ session('cart') ? count(session('cart')) : 0 }}
                     </span>
                 </a>
             </li>
-
+ 
         </ul>
-
-        <div class="border-bottom pt-0">
-
-            <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
-                <span class="text-muted">Theme</span>
-                <button class="theme-toggle" onclick="toggleTheme()" id="mobileThemeIcon" aria-label="Toggle theme">
-                    <i class="bi bi-moon-stars"></i>
-                </button>
-            </div>
-
-            @auth
-                <div class="d-flex align-items-center mb-3 border-top pt-3">
-                    <div class="profile-icon me-2">
-                        {{ strtoupper(substr(auth()->user()->name,0,1)) }}
-                    </div>
-                    <div>
-                        <div style="font-weight:600;">{{ auth()->user()->name }}</div>
-                        <small class="text-muted">{{ auth()->user()->email }}</small>
-                    </div>
-                    
+ 
+        <div class="advance-divider"></div>
+ 
+        @auth
+            <div class="advance-account">
+                <div class="advance-avatar">
+                    {{ strtoupper(substr(auth()->user()->name,0,1)) }}
                 </div>
-
-                <button class="btn-danger w-100 mt-3">
+                <div>
+                    <div class="advance-account-name">{{ auth()->user()->name }}</div>
+                    <small class="advance-account-email">{{ auth()->user()->email }}</small>
+                </div>
+            </div>
+ 
+            <div class="mt-auto">
+ 
                 @if(auth()->user()->role === 'admin')
-                    <a href="{{ route('admin.products') }}" class="nav-link">⚡ Admin Panel</a>
-                @endif
-                </button>
-                <button class="btn-danger w-100 mt-3">  
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('orders.my') }}">
-                        <i class="bi bi-bag-check"></i> My Orders
+                    <a href="{{ route('admin.products') }}" class="advance-action">
+                        <i class="bi bi-lightning-charge" aria-hidden="true"></i> Admin panel
                     </a>
-                </li>
-                </button>
-
-                <button class="btn-danger w-100 mt-3"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    Logout
-                </button>
-            @endauth
-
-            @guest
-                <a href="{{ route('login') }}" class="nav-link">Login</a>
-                <!-- <a href="{{ route('register') }}" class="nav-link">Register</a> -->
-            @endguest
-
-            <div class="social-bottom mt-4 text-center">
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="https://www.instagram.com/ad_vance_3d/?next=%2F_.ayush_dubey_%2F" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                    <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                    <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-                    <a href="https://wa.me/qr/IYH7KPL4QUQCE1" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-                </div>
+                @endif
+ 
+                <a href="{{ route('orders.my') }}" class="advance-action">
+                    <i class="bi bi-bag-check" aria-hidden="true"></i> My orders
+                </a>
+ 
+                <a href="#" class="advance-action advance-action-danger"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Log out
+                </a>
+ 
             </div>
-
+        @endauth
+ 
+        @guest
+            <div class="mt-auto">
+                <a href="{{ route('login') }}" class="advance-login-link">Log in</a>
+            </div>
+        @endguest
+ 
+        <div class="advance-social">
+            <a href="https://www.instagram.com/ad_vance_3d/?next=%2F_.ayush_dubey_%2F" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook" aria-hidden="true"></i></a>
+            <a href="#" aria-label="YouTube"><i class="bi bi-youtube" aria-hidden="true"></i></a>
+            <a href="https://wa.me/qr/IYH7KPL4QUQCE1" aria-label="WhatsApp"><i class="bi bi-whatsapp" aria-hidden="true"></i></a>
         </div>
-
+ 
     </div>
-
+ 
 </div>
 
 <!-- ===========================
@@ -1698,10 +1401,6 @@ PAGE CONTENT
 
 </main>
 
-
-<!-- ===========================
-FOOTER
-=========================== -->
 
 <!-- ===========================
 FOOTER (merged: new minimal structure + old Blade data)

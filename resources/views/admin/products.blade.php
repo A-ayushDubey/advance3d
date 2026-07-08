@@ -494,6 +494,7 @@ body.dark-mode .admin-table tbody tr:hover{
 }
 body.dark-mode .admin-table td{
     color: var(--ink-dark, #F2F1ED);
+    background: var(--bg-raised-dark, #1A1A19);
 }
 
 .text-muted-id{

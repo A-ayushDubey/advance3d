@@ -522,7 +522,7 @@ body.dark-mode .admin-table tbody tr:hover{ background: var(--accent-50-dark, #2
     font-size: 14px;
     vertical-align: middle;
 }
-body.dark-mode .admin-table td{ color: var(--ink-dark, #F2F1ED); }
+body.dark-mode .admin-table td{ color: var(--ink-dark, #F2F1ED); background: var(--bg-raised-dark, #1A1A19);}
 
 .text-muted-id{
     color: var(--ink-soft, #6B6B65);

@@ -210,6 +210,7 @@ body.dark-mode .cart-subtitle{ color: var(--ink-soft-dark, #9B9A92); }
     border: 1px solid var(--hairline, #E8E6E0);
     border-radius: 6px;
     overflow: hidden;
+    
 }
 body.dark-mode .cart-table-card{
     background: var(--bg-raised-dark, #1A1A19);
@@ -245,7 +246,7 @@ body.dark-mode .cart-table tbody tr{ border-bottom-color: var(--hairline-dark, #
     color: var(--ink, #1A1A1A);
     font-size: 14px;
 }
-body.dark-mode .cart-table td{ color: var(--ink-dark, #F2F1ED); }
+body.dark-mode .cart-table td{ color: var(--ink-dark, #F2F1ED);background: var(--bg-raised-dark, #1A1A19); }
 
 .cart-product-cell{
     display: flex;
