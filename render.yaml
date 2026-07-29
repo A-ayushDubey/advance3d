@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: advance3d
+    runtime: php
+    buildCommand: composer install --no-dev --optimize-autoloader
+    startCommand: sh start.sh
+    envVars:
+      - key: APP_ENV
+        value: production
