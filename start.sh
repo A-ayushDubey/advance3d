@@ -17,7 +17,7 @@ php artisan db:show 2>&1 || echo "DB connection failed"
 
 # Run migrations
 echo "Running migrations..."
-php artisan migrate:fresh --force 2>&1
+php artisan migrate --force 2>&1
 
 echo "Done migrations"
 php artisan storage:link || true
