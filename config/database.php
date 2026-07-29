@@ -43,24 +43,22 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        
         'mysql' => [
-        'driver'         => 'mysql',
-        'host'           => env('DB_HOST', '127.0.0.1'),
-        'port'           => env('DB_PORT', '3306'),
-        'database'       => env('DB_DATABASE', 'forge'),
-        'username'       => env('DB_USERNAME', 'forge'),
-        'password'       => env('DB_PASSWORD', ''),
-        'unix_socket'    => env('DB_SOCKET', ''),
-        'charset'        => 'utf8mb4',
-        'collation'      => 'utf8mb4_unicode_ci',
-        'prefix'         => '',
-        'prefix_indexes' => true,
-        'strict'         => false,        // ← change true to false
-        'engine'         => 'InnoDB ROW_FORMAT=DYNAMIC',  // ← add this line
-        'options' => extension_loaded('pdo_mysql') ? [
-        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-    ] : [],
+        'driver'      => 'mysql',
+        'host'        => env('DB_HOST', '127.0.0.1'),
+        'port'        => env('DB_PORT', '3306'),
+        'database'    => env('DB_DATABASE', 'forge'),
+        'username'    => env('DB_USERNAME', 'forge'),
+        'password'    => env('DB_PASSWORD', ''),
+        'charset'     => 'utf8mb4',
+        'collation'   => 'utf8mb4_unicode_ci',
+        'prefix'      => '',
+        'strict'      => false,
+        'engine'      => 'InnoDB ROW_FORMAT=DYNAMIC',
+        'options'     => extension_loaded('pdo_mysql') ? [
+            PDO::MYSQL_ATTR_SSL_CA => '/etc/ssl/certs/ca-certificates.crt',
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+        ] : [],
     ],
 
         'pgsql' => [

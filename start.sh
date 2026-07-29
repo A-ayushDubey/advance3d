@@ -6,10 +6,10 @@ echo "DB_HOST IS: $DB_HOST"
 php artisan config:clear
 php artisan cache:clear
 
-echo "Running migrations..."
-php artisan migrate:fresh --force --verbose
+echo "Running migrate:fresh..."
+php artisan migrate:fresh --force --verbose 2>&1
 
-php artisan db:seed --force || true
+echo "Migration done. Starting server..."
 php artisan storage:link || true
 php artisan config:cache
 
