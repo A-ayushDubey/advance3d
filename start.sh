@@ -4,7 +4,14 @@ echo "PORT IS: $PORT"
 echo "DB_HOST IS: $DB_HOST"
 
 php artisan config:clear
-php artisan migrate --force
+php artisan cache:clear
+
+echo "Running migrations..."
+php artisan migrate --force --verbose
+
+echo "Running seeders..."
+php artisan db:seed --force || true
+
 php artisan storage:link || true
 php artisan config:cache
 
