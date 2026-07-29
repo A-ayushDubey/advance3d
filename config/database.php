@@ -58,9 +58,10 @@ return [
         'prefix_indexes' => true,
         'strict'         => false,        // ← change true to false
         'engine'         => 'InnoDB ROW_FORMAT=DYNAMIC',  // ← add this line
-        'options'        => extension_loaded('pdo_mysql') ? array_filter([
-            PDO::MYSQL_ATTR_SSL_CA => base_path('ca.pem'),
-        ]) : [],
+        'options' => extension_loaded('pdo_mysql') ? array_filter([
+        PDO::MYSQL_ATTR_SSL_CA => '/etc/ssl/certs/ca-certificates.crt',
+        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+    ]) : [],
     ],
 
         'pgsql' => [
