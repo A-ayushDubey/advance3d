@@ -7,11 +7,9 @@ php artisan config:clear
 php artisan cache:clear
 
 echo "Running migrations..."
-php artisan migrate --force --verbose
+php artisan migrate:fresh --force --verbose
 
-echo "Running seeders..."
 php artisan db:seed --force || true
-
 php artisan storage:link || true
 php artisan config:cache
 
