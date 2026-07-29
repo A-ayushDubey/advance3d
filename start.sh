@@ -1,4 +1,4 @@
-git remote set-url origin https://YOUR_TOKEN@github.com/A-ayushDubey/advance3d.git#!/bin/sh
+#!/bin/sh
 
 echo "PORT IS: $PORT"
 echo "DB_HOST IS: $DB_HOST"
