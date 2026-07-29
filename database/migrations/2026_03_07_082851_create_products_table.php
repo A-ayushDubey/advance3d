@@ -6,34 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-   public function up()
-{
-    Schema::create('products', function (Blueprint $table) {
-        $table->engine = 'InnoDB';      // ← add this
-        $table->charset = 'utf8mb4';    // ← add this
-        $table->collation = 'utf8mb4_unicode_ci'; // ← add this
-        
-        $table->id();
-        $table->string('name');
-        $table->text('description');
-        $table->decimal('price', 8, 2);
-        $table->string('image');
-        $table->string('category');
-        $table->integer('stock')->default(0);
-        $table->timestamps();
-    });
-}
+    public function up()
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->string('image')->nullable();
+            $table->integer('stock')->default(0);
+            $table->decimal('discount', 5, 2)->nullable()->default(0);
+            $table->timestamps();
+        });
+    }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('products');
